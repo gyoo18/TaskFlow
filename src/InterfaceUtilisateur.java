@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
-public class MenuPrincipal {
+public class InterfaceUtilisateur {
     
-    private final Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public void demarrer(){
+    public static void demarrer(){
         boolean continuer = true;
 
         System.out.println("TASKFLOW - Gestion des tâches\n");
@@ -64,7 +64,7 @@ public class MenuPrincipal {
         scanner.close();
     }
 
-    public void afficherMenu() {
+    public static void afficherMenu() {
         System.out.println("1. Ajouter une tâche");
         System.out.println("2. Afficher les tâches");
         System.out.println("3. Marquer une tâche comme terminée");
@@ -75,7 +75,7 @@ public class MenuPrincipal {
     }
 
     //TODO: Pour tests. Enlever lorsque toutes les fonctionnalités seront disponibles. 
-    private void afficherFonctionnalite(String nom){
+    private static void afficherFonctionnalite(String nom){
         System.out.println("La fonctionnalité \"" + nom + "\" n'est pas encore disponible.");
     }
 }
