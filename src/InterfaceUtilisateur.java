@@ -3,6 +3,7 @@ import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 public class InterfaceUtilisateur {
     
@@ -113,39 +114,80 @@ public class InterfaceUtilisateur {
 
         Tache tache = new Tache();
 
+        // Préparer les données statiques
         int annee = tache.echeance.get(Calendar.YEAR);
         String mois = tache.echeance.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
         int jour = tache.echeance.get(Calendar.DAY_OF_MONTH);
         int heure = tache.echeance.get(Calendar.HOUR_OF_DAY);
         int minute = tache.echeance.get(Calendar.MINUTE);
 
+        Calendar caltmp = Calendar.getInstance();
+        String[] moisLocale = new String[12];{
+            caltmp.set(Calendar.MONTH, Calendar.JANUARY   ); moisLocale[0] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.FEBRUARY  ); moisLocale[1] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.MARCH     ); moisLocale[2] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.APRIL     ); moisLocale[3] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.MAY       ); moisLocale[4] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.JUNE      ); moisLocale[5] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.JULY      ); moisLocale[6] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.AUGUST    ); moisLocale[7] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.SEPTEMBER ); moisLocale[8] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.OCTOBER   ); moisLocale[9] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.NOVEMBER  ); moisLocale[10]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+            caltmp.set(Calendar.MONTH, Calendar.DECEMBER  ); moisLocale[11]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
+        }
+
+        SousRoutine positionnerCurseurTitre =     () -> {System.out.print(curPos(10,6));};
+        SousRoutine positionnerCurseurPriorite =  () -> {System.out.print(curPos(46,7));};
+        SousRoutine positionnerCurseurEcheance =  () -> {System.out.print(curPos(13,8));};
+        SousRoutine positionnerCurseurErreur =    () -> {System.out.print(curPos(1,9));};
+        SousRoutine positionnerCurseurConfirmer = () -> {System.out.print(curPos(1,10));};
+        SousRoutine effacerErreur =               () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
+
+        // Afficher et recceuillir les données
         while(true){
             effacerEcran();
 
+            //TODO réusiner pour faire un bon système de menu.
             System.out.print(
                 "TASKFLOW\n"+
                 "\n"+
                 "Ajouter une tâche\n"+
                 "=================\n"+
                 "\n"+
-                "Titre : ["+GRIS+ITAL+tache.titre+NTRE+"_".repeat(33-tache.titre.length())+"]\n"+
-                "Priorité ["+GRIS+ITAL+(tache.priorite==Tache.Priorite.BASSE? "(1=Basse),": " 1=Basse ,")+(tache.priorite==Tache.Priorite.NORMALE? "(2=Normale),": " 2=Normale ,")+(tache.priorite==Tache.Priorite.ELEVEE? "(3=Élevée)": " 3=Élevée ")+NTRE+"] : \n"+
-                "Échéance : ["+GRIS+ITAL+annee+NTRE+"] ["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+ITAL+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]curPos(10,6)+"
+                "Titre : ["+GRIS+ITAL+ tache.titre+"_".repeat(33-tache.titre.length()) +NTRE+"]\n"+
+                "Priorité ["+GRIS+ITAL+ (
+                    switch (tache.priorite){
+                        case BASSE   -> "(1=Basse), 2=Normale , 3=Élevée ";
+                        case NORMALE -> " 1=Basse ,(2=Normale), 3=Élevée ";
+                        case ELEVEE  -> " 1=Basse , 2=Normale ,(3=Élevée)";
+                    }) +NTRE+"] : \n"+
+                "Échéance : ["+GRIS+ITAL+ annee +NTRE+"] ["+GRIS+ITAL+ mois +NTRE+"] ["+GRIS+ITAL+ jour +ITAL+"] à ["+GRIS+ITAL+ heure+"h" +NTRE+"] ["+GRIS+ITAL+ minute+"m" +NTRE+"]"
             );
-        
-            String titreRep = scanner.nextLine();
-            if (titreRep.length() != 0){
-                tache.titre = titreRep;
+       
+            // Lire le titre
+            {
+                positionnerCurseurTitre.appeler();
+                String titreRep = scanner.nextLine();
+                if (titreRep.length() != 0){
+                    tache.titre = titreRep;
+                }
+                positionnerCurseurTitre.appeler();
+                System.out.print(EFFACER_LIGNE);
+                System.out.print(" "+tache.titre+" ]");
             }
-            System.out.print(curPos(10,6)+EFFACER_LIGNE);
-            System.out.print(" "+tache.titre+" ]");
 
             // Lire la priorité
             while(true){
-                System.out.print(curPos(47,7));
+                positionnerCurseurPriorite.appeler();
+                System.out.print(EFFACER_LIGNE_RESTE);
+
                 String rep = scanner.nextLine().strip();
-                System.out.print(curPos(1, 9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(curPos(1,7)+EFFACER_LIGNE);
+
+                effacerErreur.appeler();
+                positionnerCurseurPriorite.appeler();
+                System.out.print(EFFACER_LIGNE);
+
                 switch(rep){
                     case "1": 
                         System.out.print("Priorité : Basse");
@@ -161,8 +203,8 @@ public class InterfaceUtilisateur {
                         tache.priorite = Tache.Priorite.ELEVEE;
                         break;
                     default:
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entre 1 et 3"+NTRE); // Affiche un message d'erreur sur la dernière ligne
-                        System.out.print(curPos(47,7)+EFFACER_LIGNE); 
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un nombre entre 1 et 3"+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                 }
                 break;
@@ -171,21 +213,25 @@ public class InterfaceUtilisateur {
             // Lire la date
             // Année
             while(true){
-                System.out.print(curPos(13,8)); // Positionne le curseur
+                positionnerCurseurEcheance.appeler();
+
                 String anneeRep = scanner.nextLine().strip();
-                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(curPos(1,8)+EFFACER_LIGNE); // Repositionne le curseur au début de la ligne d'entrée et efface la ligne
+
+                effacerErreur.appeler();
+                positionnerCurseurEcheance.appeler();
+                System.out.print(EFFACER_LIGNE);
 
                 if (anneeRep.length() != 0){
                     try{
                         annee = Integer.parseInt(anneeRep);
                     }catch(NumberFormatException e){
                         System.out.print("Échéance : ["+GRIS+ITAL+annee+NTRE+"] ["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier."+NTRE); // Affiche un message d'erreur sur la dernière ligne
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un nombre entier."+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
-                // Sauvegarde la position du curseur   v----v
+                // Sauvegarde la position du curseur     v--v
                 System.out.print("Échéance : "+annee+" "+CURS+"["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.YEAR, annee);
                 break;
@@ -193,25 +239,11 @@ public class InterfaceUtilisateur {
 
             // Lire la date
             // Mois
-            Calendar caltmp = Calendar.getInstance();
-            String[] moisLocale = new String[12];
-            caltmp.set(Calendar.MONTH, Calendar.JANUARY   ); moisLocale[0] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.FEBRUARY  ); moisLocale[1] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.MARCH     ); moisLocale[2] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.APRIL     ); moisLocale[3] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.MAY       ); moisLocale[4] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.JUNE      ); moisLocale[5] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.JULY      ); moisLocale[6] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.AUGUST    ); moisLocale[7] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.SEPTEMBER ); moisLocale[8] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.OCTOBER   ); moisLocale[9] = caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.NOVEMBER  ); moisLocale[10]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
-            caltmp.set(Calendar.MONTH, Calendar.DECEMBER  ); moisLocale[11]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
             while(true){
-                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1));
                 String moisRep = scanner.nextLine().strip();
-                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                effacerErreur.appeler();
+                System.out.print(CURA+EFFACER_LIGNE);
 
                 int moisInt = tache.echeance.get(Calendar.MONTH);
                 if (moisRep.length() != 0){
@@ -227,7 +259,8 @@ public class InterfaceUtilisateur {
                         mois = moisRep;
                     }else{
                         System.out.print("["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un mois parmis : [ "); // Affiche un message d'erreur sur la dernière ligne
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un mois parmis : [ "); // Affiche un message d'erreur sur la dernière ligne
                         for (int i = 0; i < moisLocale.length; i++) {
                             System.out.print(moisLocale[i] + (i<moisLocale.length-1? ", " : " ]"+NTRE));
                         }
@@ -235,7 +268,7 @@ public class InterfaceUtilisateur {
                     }
                 }
                 // Sauvegarde la position du curseur
-                //                      v----v
+                //                        v--v
                 System.out.print(mois+" "+CURS+"["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.MONTH, moisInt);
                 break;
@@ -243,12 +276,13 @@ public class InterfaceUtilisateur {
 
             // Lire la date
             // Jour
+            // IMPORTANT : Il est nécessaire de lire le mois avant le jour pour connaître le maximum de jours.
             int maxJour = tache.echeance.getActualMaximum(Calendar.DAY_OF_MONTH);
             while(true){
-                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1));
                 String jourRep = scanner.nextLine().strip();
-                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                effacerErreur.appeler();
+                System.out.print(CURA+EFFACER_LIGNE);
 
                 if (jourRep.length() != 0){
                     try{
@@ -259,12 +293,13 @@ public class InterfaceUtilisateur {
                         jour = jourInt;
                     }catch(NumberFormatException e){
                         System.out.print("["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxJour+NTRE); // Affiche un message d'erreur sur la dernière ligne
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxJour+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur
-                //                        v----v
+                //                          v--v
                 System.out.print(jour+" à "+CURS+"["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.DAY_OF_MONTH, jour);
                 break;
@@ -272,12 +307,13 @@ public class InterfaceUtilisateur {
 
             // Lire la date
             // Heure
+            // IMPORTANT : Il est nécessaire de lire l'année/mois/jour pour connaître le maximum d'heures
             int maxHeure = tache.echeance.getActualMaximum(Calendar.HOUR_OF_DAY); // Changement d'heure et autres corrections à tous les cents ans
             while(true){
-                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1));
                 String heureRep = scanner.nextLine().strip();
-                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                effacerErreur.appeler();
+                System.out.print(CURA+EFFACER_LIGNE);
 
                 if (heureRep.length() != 0){
                     try{
@@ -288,12 +324,13 @@ public class InterfaceUtilisateur {
                         heure = heureInt;
                     }catch(NumberFormatException e){
                         System.out.print("["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxHeure+NTRE); // Affiche un message d'erreur sur la dernière ligne
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxHeure+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur
-                //                       v----v
+                //                         v--v
                 System.out.print(heure+" "+CURS+"["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.HOUR_OF_DAY, heure);
                 break;
@@ -302,10 +339,10 @@ public class InterfaceUtilisateur {
             // Lire la date
             // Minute
             while(true){
-                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1));
                 String minuteRep = scanner.nextLine().strip();
-                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
-                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                effacerErreur.appeler();
+                System.out.print(CURA+EFFACER_LIGNE);
 
                 if (minuteRep.length() != 0){
                     try{
@@ -316,7 +353,8 @@ public class InterfaceUtilisateur {
                         minute = minuteInt;
                     }catch(NumberFormatException e){
                         System.out.print("["+GRIS+ITAL+minute+"m"+NTRE+"]");
-                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et 59"+NTRE); // Affiche un message d'erreur sur la dernière ligne
+                        positionnerCurseurErreur.appeler();
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et 59"+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
@@ -326,28 +364,30 @@ public class InterfaceUtilisateur {
             }
 
             // Confirmer
-            System.out.print(curPos(1,10)); // Positionner le curseur
-            System.out.print("Enregistrer la nouvelle tâche ? ["+GRIS+ITAL+"(o=Oui)| n=Non | a=Annuler"+NTRE+" ] : ");
-            String confirmation = scanner.nextLine().strip().toLowerCase();
-            System.out.print(curPos(1,11)+EFFACER_LIGNE); //Efface le message d'erreur
-            System.out.print(curPos(1,10)+EFFACER_LIGNE); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+            {
+                positionnerCurseurConfirmer.appeler();
+                System.out.print("Enregistrer la nouvelle tâche ? ["+GRIS+ITAL+"(o=Oui)| n=Non | a=Annuler"+NTRE+" ] : ");
+                String confirmation = scanner.nextLine().strip().toLowerCase();
+                positionnerCurseurConfirmer.appeler();
+                System.out.print(EFFACER_LIGNE);
 
-            if (confirmation.equals("o")){
-                System.out.println();
-                System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
-                System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
-                scanner.nextLine();
-                InterfaceUtilisateur.menu = Menu.PRINCIPAL;
-                break;
-            }
+                if (confirmation.equals("o")){
+                    System.out.println();
+                    System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
+                    System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
+                    scanner.nextLine();
+                    InterfaceUtilisateur.menu = Menu.PRINCIPAL;
+                    break;
+                }
 
-            if (confirmation.equals("a")){
-                System.out.println();
-                System.out.println(JAUNE+"Abandon. La tâche ne sera pas enregistrée"+NTRE);
-                System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
-                scanner.nextLine();
-                InterfaceUtilisateur.menu = Menu.PRINCIPAL;
-                break;
+                if (confirmation.equals("a")){
+                    System.out.println();
+                    System.out.println(JAUNE+"Abandon. La tâche ne sera pas enregistrée"+NTRE);
+                    System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
+                    scanner.nextLine();
+                    InterfaceUtilisateur.menu = Menu.PRINCIPAL;
+                    break;
+                }
             }
         }
     }
@@ -369,6 +409,9 @@ public class InterfaceUtilisateur {
         InterfaceUtilisateur.menu = Menu.PRINCIPAL;
     }
 
+    /**
+     * Appelle `cls` sur Windows et `clear` sur *UNIX/MacOS/*BSD
+     */
     private static void effacerEcran(){
         try{
             if (InterfaceUtilisateur.osEstWindows){
@@ -557,4 +600,9 @@ public class InterfaceUtilisateur {
             return ESC+n+"T";
         }
     }
+}
+
+@FunctionalInterface 
+abstract interface SousRoutine {
+    void appeler();
 }
