@@ -128,24 +128,24 @@ public class InterfaceUtilisateur {
                 "Ajouter une tâche\n"+
                 "=================\n"+
                 "\n"+
-                "Titre : [\033[90m\033[3m"+tache.titre+"\033[0m"+"_".repeat(33-tache.titre.length())+"]\n"+
-                "Priorité ["+(tache.priorite==Tache.Priorite.BASSE? "(1=Basse),": " 1=Basse ,")+(tache.priorite==Tache.Priorite.NORMALE? "(2=Normale),": " 2=Normale ,")+(tache.priorite==Tache.Priorite.ELEVEE? "(3=Élevée)": " 3=Élevée ")+"] : \n"+
-                "Échéance : [\033[90m\033[3m"+annee+"\033[0m] [\033[90m\033[3m"+mois+"\033[0m] [\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]\033[6;10H"
+                "Titre : ["+GRIS+ITAL+tache.titre+NTRE+"_".repeat(33-tache.titre.length())+"]\n"+
+                "Priorité ["+GRIS+ITAL+(tache.priorite==Tache.Priorite.BASSE? "(1=Basse),": " 1=Basse ,")+(tache.priorite==Tache.Priorite.NORMALE? "(2=Normale),": " 2=Normale ,")+(tache.priorite==Tache.Priorite.ELEVEE? "(3=Élevée)": " 3=Élevée ")+NTRE+"] : \n"+
+                "Échéance : ["+GRIS+ITAL+annee+NTRE+"] ["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+ITAL+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]curPos(10,6)+"
             );
         
             String titreRep = scanner.nextLine();
             if (titreRep.length() != 0){
                 tache.titre = titreRep;
             }
-            System.out.print("\033[6;10H\033[0K"); // Repositionner le curseur et effacer la ligne
+            System.out.print(curPos(10,6)+EFFACER_LIGNE);
             System.out.print(" "+tache.titre+" ]");
 
             // Lire la priorité
             while(true){
-                System.out.print("\033[7;47H"); // Positionne le curseur
+                System.out.print(curPos(47,7));
                 String rep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[7;1H\033[0K"); // Repositionne le curseur au début de la ligne d'entrée et efface la ligne
+                System.out.print(curPos(1, 9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(curPos(1,7)+EFFACER_LIGNE);
                 switch(rep){
                     case "1": 
                         System.out.print("Priorité : Basse");
@@ -161,8 +161,8 @@ public class InterfaceUtilisateur {
                         tache.priorite = Tache.Priorite.ELEVEE;
                         break;
                     default:
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un nombre entre 1 et 3\033[0m"); // Affiche un message d'erreur sur la dernière ligne
-                        System.out.print("\033[7;47H\033[0K"); //Repositionne le curseur et efface la donnée entrée
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entre 1 et 3"+NTRE); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print(curPos(47,7)+EFFACER_LIGNE); 
                         continue;
                 }
                 break;
@@ -171,22 +171,22 @@ public class InterfaceUtilisateur {
             // Lire la date
             // Année
             while(true){
-                System.out.print("\033[8;13H"); // Positionne le curseur
+                System.out.print(curPos(13,8)); // Positionne le curseur
                 String anneeRep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[8;1H\033[0K"); // Repositionne le curseur au début de la ligne d'entrée et efface la ligne
+                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(curPos(1,8)+EFFACER_LIGNE); // Repositionne le curseur au début de la ligne d'entrée et efface la ligne
 
                 if (anneeRep.length() != 0){
                     try{
                         annee = Integer.parseInt(anneeRep);
                     }catch(NumberFormatException e){
-                        System.out.print("Échéance : [\033[90m\033[3m"+annee+"\033[0m] [\033[90m\033[3m"+mois+"\033[0m] [\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un nombre entier.\033[0m"); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print("Échéance : ["+GRIS+ITAL+annee+NTRE+"] ["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier."+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur   v----v
-                System.out.print("Échéance : "+annee+" \033[s[\033[90m\033[3m"+mois+"\033[0m] [\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
+                System.out.print("Échéance : "+annee+" "+CURS+"["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.YEAR, annee);
                 break;
             }
@@ -208,10 +208,10 @@ public class InterfaceUtilisateur {
             caltmp.set(Calendar.MONTH, Calendar.NOVEMBER  ); moisLocale[10]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
             caltmp.set(Calendar.MONTH, Calendar.DECEMBER  ); moisLocale[11]= caltmp.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
             while(true){
-                System.out.print("\033[u\033[1C"); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
                 String moisRep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[u\033[0K"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
 
                 int moisInt = tache.echeance.get(Calendar.MONTH);
                 if (moisRep.length() != 0){
@@ -226,17 +226,17 @@ public class InterfaceUtilisateur {
                     if (estMois){
                         mois = moisRep;
                     }else{
-                        System.out.print("[\033[90m\033[3m"+mois+"\033[0m] [\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un mois parmis : [ "); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print("["+GRIS+ITAL+mois+NTRE+"] ["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un mois parmis : [ "); // Affiche un message d'erreur sur la dernière ligne
                         for (int i = 0; i < moisLocale.length; i++) {
-                            System.out.print(moisLocale[i] + (i<moisLocale.length-1? ", " : " ]\033[0m"));
+                            System.out.print(moisLocale[i] + (i<moisLocale.length-1? ", " : " ]"+NTRE));
                         }
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur
                 //                      v----v
-                System.out.print(mois+" \033[s[\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
+                System.out.print(mois+" "+CURS+"["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.MONTH, moisInt);
                 break;
             }
@@ -245,10 +245,10 @@ public class InterfaceUtilisateur {
             // Jour
             int maxJour = tache.echeance.getActualMaximum(Calendar.DAY_OF_MONTH);
             while(true){
-                System.out.print("\033[u\033[1C"); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
                 String jourRep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[u\033[0K"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
 
                 if (jourRep.length() != 0){
                     try{
@@ -258,14 +258,14 @@ public class InterfaceUtilisateur {
                         }
                         jour = jourInt;
                     }catch(NumberFormatException e){
-                        System.out.print("[\033[90m\033[3m"+jour+"\033[0m] à [\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxJour+"\033[0m"); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print("["+GRIS+ITAL+jour+NTRE+"] à ["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxJour+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur
                 //                        v----v
-                System.out.print(jour+" à \033[s[\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
+                System.out.print(jour+" à "+CURS+"["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.DAY_OF_MONTH, jour);
                 break;
             }
@@ -274,10 +274,10 @@ public class InterfaceUtilisateur {
             // Heure
             int maxHeure = tache.echeance.getActualMaximum(Calendar.HOUR_OF_DAY); // Changement d'heure et autres corrections à tous les cents ans
             while(true){
-                System.out.print("\033[u\033[1C"); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
                 String heureRep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[u\033[0K"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
 
                 if (heureRep.length() != 0){
                     try{
@@ -287,14 +287,14 @@ public class InterfaceUtilisateur {
                         }
                         heure = heureInt;
                     }catch(NumberFormatException e){
-                        System.out.print("[\033[90m\033[3m"+heure+"h\033[0m] [\033[90m\033[3m"+minute+"m\033[0m]");
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxHeure+"\033[0m"); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print("["+GRIS+ITAL+heure+"h"+NTRE+"] ["+GRIS+ITAL+minute+"m"+NTRE+"]");
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et "+maxHeure+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
                 // Sauvegarde la position du curseur
                 //                       v----v
-                System.out.print(heure+" \033[s[\033[90m\033[3m"+minute+"m\033[0m]");
+                System.out.print(heure+" "+CURS+"["+GRIS+ITAL+minute+"m"+NTRE+"]");
                 tache.echeance.set(Calendar.HOUR_OF_DAY, heure);
                 break;
             }
@@ -302,10 +302,10 @@ public class InterfaceUtilisateur {
             // Lire la date
             // Minute
             while(true){
-                System.out.print("\033[u\033[1C"); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
+                System.out.print(CURA+curDX(1)); // Repositionne le curseur à la position de sauvegarde et le déplace de 1 à droite
                 String minuteRep = scanner.nextLine().strip();
-                System.out.print("\033[9;1H\033[0K"); //Efface le message d'erreur
-                System.out.print("\033[u\033[0K"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+                System.out.print(curPos(1,9)+EFFACER_LIGNE); //Efface le message d'erreur
+                System.out.print(CURA+"EFFACER_LIGNE+"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
 
                 if (minuteRep.length() != 0){
                     try{
@@ -315,8 +315,8 @@ public class InterfaceUtilisateur {
                         }
                         minute = minuteInt;
                     }catch(NumberFormatException e){
-                        System.out.print("[\033[90m\033[3m"+minute+"m\033[0m]");
-                        System.out.print("\033[9;1H\033[31m[ERREUR] Veuillez indiquer un nombre entier entre 0 et 59\033[0m"); // Affiche un message d'erreur sur la dernière ligne
+                        System.out.print("["+GRIS+ITAL+minute+"m"+NTRE+"]");
+                        System.out.print(curPos(1,9)+ROUGE+"[ERREUR] Veuillez indiquer un nombre entier entre 0 et 59"+NTRE); // Affiche un message d'erreur sur la dernière ligne
                         continue;
                     }
                 }
@@ -326,16 +326,16 @@ public class InterfaceUtilisateur {
             }
 
             // Confirmer
-            System.out.print("\033[10;1H"); // Positionner le curseur
-            System.out.print("Enregistrer la nouvelle tâche ? [(o=Oui)| n=Non | a=Annuler ] : ");
+            System.out.print(curPos(1,10)); // Positionner le curseur
+            System.out.print("Enregistrer la nouvelle tâche ? ["+GRIS+ITAL+"(o=Oui)| n=Non | a=Annuler"+NTRE+" ] : ");
             String confirmation = scanner.nextLine().strip().toLowerCase();
-            System.out.print("\033[11;1H\033[0K"); //Efface le message d'erreur
-            System.out.print("\033[10;1H\033[0K"); // Repositionne le curseur à la position de sauvegarde et efface la ligne
+            System.out.print(curPos(1,11)+EFFACER_LIGNE); //Efface le message d'erreur
+            System.out.print(curPos(1,10)+EFFACER_LIGNE); // Repositionne le curseur à la position de sauvegarde et efface la ligne
 
             if (confirmation.equals("o")){
                 System.out.println();
-                System.out.println("\033[33mLa tâche sera enregistrée\033[0m");
-                System.out.println("\033[90m\033[3mVersion de test, la tâche ne sera pas enregistrée.\033[0m");
+                System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
+                System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
                 scanner.nextLine();
                 InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                 break;
@@ -343,8 +343,8 @@ public class InterfaceUtilisateur {
 
             if (confirmation.equals("a")){
                 System.out.println();
-                System.out.println("\033[33mAbandon. La tâche ne sera pas enregistrée\033[0m");
-                System.out.println("\033[90m\033[3mVersion de test, la tâche ne sera pas enregistrée.\033[0m");
+                System.out.println(JAUNE+"Abandon. La tâche ne sera pas enregistrée"+NTRE);
+                System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
                 scanner.nextLine();
                 InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                 break;
@@ -380,6 +380,181 @@ public class InterfaceUtilisateur {
             e.printStackTrace();
         }catch(InterruptedException e){
             e.printStackTrace();
+        }
+    }
+
+    // ===================================
+    // Fonctions et constantes d'affichage
+    // ===================================
+
+    /**Séquence d'échappement ANSI */
+    private static final String ESC="\033[";
+    /**Sauvegarde la position du curseur. Utilisez CURA pour l'appliquer.*/
+    private static final String CURS=ESC+"s";
+    /**Applique la position du curseur sauvegardée avec CURS. */
+    private static final String CURA=ESC+"u";
+    /**Réinitalise le style d'affichage. */
+    private static final String NTRE=ESC+"0m";
+    /**Met la police en gras */
+    private static final String GRAS=ESC+"1m";
+    /**Met la police en fin, à l'opposé de gras */
+    private static final String FIN=ESC+"2m";
+    /**Met la police en italique */
+    private static final String ITAL=ESC+"3m";
+    /**Met la police en souligné */
+    private static final String SOUL=ESC+"4m";
+    /**Fait lentement clignoter le texte */
+    private static final String CLGN_LNT=ESC+"5m";
+    /**Fait rapidement clignoter le texte */
+    private static final String CLGN_RPD=ESC+"6m";
+    /**Inverse les couleurs du terminal */
+    private static final String INVRS=ESC+"7m";
+    /**Met la police en barré */
+    private static final String BARRE=ESC+"9m";
+    /**Met la couleur de la police en noir */
+    private static final String NOIR=ESC+"30m";
+    /**Met la couleur de la police en rouge */
+    private static final String ROUGE=ESC+"31m";
+    /**Met la couleur de la police en vert */
+    private static final String VERT=ESC+"32m";
+    /**Met la couleur de la police en jaune */
+    private static final String JAUNE=ESC+"33m";
+    /**Met la couleur de la police en bleu */
+    private static final String BLEU=ESC+"34m";
+    /**Met la couleur de la police en magenta */
+    private static final String MAGENTA=ESC+"35m";
+    /**Met la couleur de la police en cyan */
+    private static final String CYAN=ESC+"36m";
+    /**Met la couleur de la police en gris clair */
+    private static final String GRIS_CLAIR=ESC+"37m";
+    /**Met la couleur de la police en gris */
+    private static final String GRIS=ESC+"38m";
+    /**Met la couleur de la police en rouge clai */
+    private static final String ROUGE_CLAIR=ESC+"90m";
+    /**Met la couleur de la police en vert clair */
+    private static final String VERT_CLAIR=ESC+"91m";
+    /**Met la couleur de la police en jaune clair */
+    private static final String JAUNE_CLAIR=ESC+"92m";
+    /**Met la couleur de la police en bleu clair */
+    private static final String BLEU_CLAIR=ESC+"93m";
+    /**Met la couleur de la police en magenta clair */
+    private static final String MAGENTA_CLAIR=ESC+"94m";
+    /**Met la couleur de la police en cyan clair */
+    private static final String CYAN_CLAIR=ESC+"95m";
+    /**Met la couleur de la police en blanc */
+    private static final String BLANC=ESC+"96m";
+    /**Met la couleur du surlignage en noir */
+    private static final String SURL_NOIR=ESC+"40m";
+    /**Met la couleur du surlignage en rouge */
+    private static final String SURL_ROUGE=ESC+"41m";
+    /**Met la couleur du surlignage en vert */
+    private static final String SURL_VERT=ESC+"42m";
+    /**Met la couleur du surlignage en jaune */
+    private static final String SURL_JAUNE=ESC+"43m";
+    /**Met la couleur du surlignage en bleu */
+    private static final String SURL_BLEU=ESC+"44m";
+    /**Met la couleur du surlignage en magenta */
+    private static final String SURL_MAGENTA=ESC+"45m";
+    /**Met la couleur du surlignage en cyan */
+    private static final String SURL_CYAN=ESC+"46m";
+    /**Met la couleur du surlignage en gris clair */
+    private static final String SURL_GRIS_CLAIR=ESC+"47m";
+    /**Met la couleur du surlignage en gris */
+    private static final String SURL_GRIS=ESC+"48m";
+    /**Met la couleur du surlignage en rouge clair */
+    private static final String SURL_ROUGE_CLAIR=ESC+"100m";
+    /**Met la couleur du surlignage en vert clair */
+    private static final String SURL_VERT_CLAIR=ESC+"101m";
+    /**Met la couleur du surlignage en jaune clair */
+    private static final String SURL_JAUNE_CLAIR=ESC+"102m";
+    /**Met la couleur du surlignage en bleu clair */
+    private static final String SURL_BLEU_CLAIR=ESC+"103m";
+    /**Met la couleur du surlignage en magenta clair */
+    private static final String SURL_MAGENTA_CLAIR=ESC+"104m";
+    /**Met la couleur du surlignage en cyan clair */
+    private static final String SURL_CYAN_CLAIR=ESC+"105m";
+    /**Met la couleur du surlignage en blanc */
+    private static final String SURL_BLANC=ESC+"106m";
+    /**Efface depuis le curseur jusqu'à la fin de l'écran */
+    private static final String EFFACER_ECRAN_RESTE=ESC+"0J";
+    /**Efface depuis le début de l'écran jusqu'au curseur */
+    private static final String EFFACER_ECRAN_PRECEDANT=ESC+"1J";
+    /**Efface l'entièreté de l'écran. Ne déplace pas le curseur */
+    private static final String EFFACER_ECRAN=ESC+"2J";
+    /**Efface depuis le curseur jusqu'à la fin de la ligne */
+    private static final String EFFACER_LIGNE_RESTE=ESC+"0K";
+    /**Efface depuis le début de la ligne jusqu'au curseur */
+    private static final String EFFACER_LIGNE_PRECEDANT=ESC+"1K";
+    /**Efface l'entièreté de la ligne sur laquelle le curseur se trouve */
+    private static final String EFFACER_LIGNE=ESC+"2K";
+
+    /**
+     * Positionne le curseur à X, Y, commençant à 1,1, y vers le bas.
+     * @param x
+     * @param y
+     * @return \033[y;xH
+     */
+    private static String curPos(int x, int y){
+        return ESC+y+';'+x+'H';
+    }
+
+    /**
+     * Déplace le curseur de X vers la droite
+     * @param x
+     * @return \033[xC
+     */
+    private static String curDX(int x){
+        if (x < 0){
+            return ESC+x+'D';
+        }else{
+            return ESC+x+'C';
+        }
+    }
+
+    /**
+     * Déplace le curseur de Y vers le bas
+     * @param y
+     * @return \033[yA ou \033[yB dépendant du signe de y
+     */
+    private static String curDY(int y){
+        if (y < 0){
+            return ESC+y+'A';
+        }else{
+            return ESC+y+'B';
+        }
+    }
+    /**
+     * Déplace le curseur au début de n lignes plus bas
+     * @param n
+     * @return \033[nF ou \033[nE, dépendant du signe de n
+     */
+    private static String curLigne(int n){
+        if (n < 0){
+            return ESC+n+'F';
+        }else{
+            return ESC+n+'E';
+        }
+    }
+
+    /**
+     * Positionne le curseur à la position horizontale absolue X
+     * @param x
+     * @return \033[xG
+     */
+    private static String curX(int x){
+        return ESC+x+'G';
+    }
+
+    /**
+     * Fait défiler l'écran de n lignes vers le bas
+     * @param n
+     * @return \033[nT ou \033[nS dépendant du signe de n
+     */
+    private static String defiler(int n){
+        if (n < 0){
+            return ESC+n+"S";
+        }else{
+            return ESC+n+"T";
         }
     }
 }
