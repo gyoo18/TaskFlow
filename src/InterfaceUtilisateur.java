@@ -180,7 +180,7 @@ public class InterfaceUtilisateur {
                     tache.titre = titreRep;
                 }
                 positionnerCurseurTitre.appeler();
-                System.out.print(EFFACER_LIGNE);
+                System.out.print(EFFACER_LIGNE_RESTE);
                 System.out.print(" "+tache.titre+" ]");
             }
 
@@ -193,19 +193,21 @@ public class InterfaceUtilisateur {
 
                 effacerErreur.appeler();
                 positionnerCurseurPriorite.appeler();
-                System.out.print(EFFACER_LIGNE);
 
                 switch(rep){
-                    case "1": 
+                    case "1":
+                        System.out.print(curX(0)+EFFACER_LIGNE); 
                         System.out.print("Priorité : Basse");
                         tache.priorite = Tache.Priorite.BASSE;
                         break;
                     case "":
                     case "2":
+                        System.out.print(curX(0)+EFFACER_LIGNE);
                         System.out.print("Priorité : Normale");
                         tache.priorite = Tache.Priorite.NORMALE;
                         break;
                     case "3":
+                        System.out.print(curX(0)+EFFACER_LIGNE);
                         System.out.print("Priorité : Élevée");
                         tache.priorite = Tache.Priorite.ELEVEE;
                         break;
@@ -226,7 +228,7 @@ public class InterfaceUtilisateur {
 
                 effacerErreur.appeler();
                 positionnerCurseurEcheance.appeler();
-                System.out.print(EFFACER_LIGNE);
+                System.out.print(curX(0)+EFFACER_LIGNE);
 
                 if (anneeRep.length() != 0){
                     try{
@@ -250,7 +252,7 @@ public class InterfaceUtilisateur {
                 System.out.print(CURA+curDX(1));
                 String moisRep = scanner.nextLine().strip();
                 effacerErreur.appeler();
-                System.out.print(CURA+EFFACER_LIGNE);
+                System.out.print(CURA+EFFACER_LIGNE_RESTE);
 
                 int moisInt = tache.echeance.get(Calendar.MONTH);
                 if (moisRep.length() != 0){
@@ -289,7 +291,7 @@ public class InterfaceUtilisateur {
                 System.out.print(CURA+curDX(1));
                 String jourRep = scanner.nextLine().strip();
                 effacerErreur.appeler();
-                System.out.print(CURA+EFFACER_LIGNE);
+                System.out.print(CURA+EFFACER_LIGNE_RESTE);
 
                 if (jourRep.length() != 0){
                     try{
@@ -320,7 +322,7 @@ public class InterfaceUtilisateur {
                 System.out.print(CURA+curDX(1));
                 String heureRep = scanner.nextLine().strip();
                 effacerErreur.appeler();
-                System.out.print(CURA+EFFACER_LIGNE);
+                System.out.print(CURA+EFFACER_LIGNE_RESTE);
 
                 if (heureRep.length() != 0){
                     try{
@@ -349,7 +351,7 @@ public class InterfaceUtilisateur {
                 System.out.print(CURA+curDX(1));
                 String minuteRep = scanner.nextLine().strip();
                 effacerErreur.appeler();
-                System.out.print(CURA+EFFACER_LIGNE);
+                System.out.print(CURA+EFFACER_LIGNE_RESTE);
 
                 if (minuteRep.length() != 0){
                     try{
@@ -378,7 +380,7 @@ public class InterfaceUtilisateur {
                 positionnerCurseurConfirmer.appeler();
                 System.out.print(EFFACER_LIGNE);
 
-                if (confirmation.equals("o")){
+                if (confirmation.equals("o") || confirmation.length() == 0){
                     System.out.println();
                     System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
                     System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
@@ -478,21 +480,21 @@ public class InterfaceUtilisateur {
     /**Met la couleur de la police en gris clair */
     private static final String GRIS_CLAIR=ESC+"37m";
     /**Met la couleur de la police en gris */
-    private static final String GRIS=ESC+"38m";
+    private static final String GRIS=ESC+"90m";
     /**Met la couleur de la police en rouge clai */
-    private static final String ROUGE_CLAIR=ESC+"90m";
+    private static final String ROUGE_CLAIR=ESC+"91m";
     /**Met la couleur de la police en vert clair */
-    private static final String VERT_CLAIR=ESC+"91m";
+    private static final String VERT_CLAIR=ESC+"92m";
     /**Met la couleur de la police en jaune clair */
-    private static final String JAUNE_CLAIR=ESC+"92m";
+    private static final String JAUNE_CLAIR=ESC+"93m";
     /**Met la couleur de la police en bleu clair */
-    private static final String BLEU_CLAIR=ESC+"93m";
+    private static final String BLEU_CLAIR=ESC+"94m";
     /**Met la couleur de la police en magenta clair */
-    private static final String MAGENTA_CLAIR=ESC+"94m";
+    private static final String MAGENTA_CLAIR=ESC+"95m";
     /**Met la couleur de la police en cyan clair */
-    private static final String CYAN_CLAIR=ESC+"95m";
+    private static final String CYAN_CLAIR=ESC+"96m";
     /**Met la couleur de la police en blanc */
-    private static final String BLANC=ESC+"96m";
+    private static final String BLANC=ESC+"97m";
     /**Met la couleur du surlignage en noir */
     private static final String SURL_NOIR=ESC+"40m";
     /**Met la couleur du surlignage en rouge */
