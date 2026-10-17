@@ -3,7 +3,7 @@
 ## Travail par : 
 Hugo Thivierge - THIH66360209  
 Sébastien Roussel -  
-Vincent Godbout -  
+Vincent Godbout - GODV66300500
 Félix Ladouceur -  
 Francis Lapointe -
 
