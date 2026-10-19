@@ -1371,6 +1371,7 @@ Modifier l'échéance d'une Tâche
             System.exit(0);
         } else if (reponseQuitter.equalsIgnoreCase("n")) {
             System.out.println("Retour au menu principal.");
+            InterfaceUtilisateur.menu = Menu.PRINCIPAL;
         } else {
             System.out.println("Réponse invalide. Veuillez entrer 'o' pour oui ou 'n' pour non.");
         }
