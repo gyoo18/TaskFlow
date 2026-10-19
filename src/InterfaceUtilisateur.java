@@ -16,7 +16,7 @@ public class InterfaceUtilisateur {
     private enum Menu {
         PRINCIPAL,
         AJOUTER_TACHE,
-        AFFICHER_TACHE,
+        AFFICHER_TACHES,
         TERMINER_TACHE,
         GERER_TACHE,
         TITRE_TACHE,
@@ -46,10 +46,10 @@ public class InterfaceUtilisateur {
         switch(InterfaceUtilisateur.menu){
             case Menu.PRINCIPAL:        afficherMenuPrincipal(); break;
             case Menu.AJOUTER_TACHE:    afficherAjouterUneTache(); break;
-            case Menu.AFFICHER_TACHE:   afficherListeTaches(); break;
+            case Menu.AFFICHER_TACHES:   afficherListeTaches(); break;
             case Menu.TERMINER_TACHE:   erreurNonImplemente("Terminer une Tâche"); break;
             case Menu.GERER_TACHE:      afficherGererTache(); break;
-            case Menu.TITRE_TACHE:      erreurNonImplemente("Gérer le titre d'une Tâche"); break;
+            case Menu.TITRE_TACHE:      afficherTitreTache(); break;
             case Menu.STATUT_TACHE:     erreurNonImplemente("Gérer le statut d'une Tâche"); break;
             case Menu.PRIORITE_TACHE:   erreurNonImplemente("Gérer la Priorité d'une Tâche"); break;
             case Menu.ECHEANCE_TACHE:   erreurNonImplemente("Gérer l'Échéance d'une Tâche"); break;
@@ -90,7 +90,7 @@ public class InterfaceUtilisateur {
             // TODO: remplacer afficherFonctionnalite par les vraies fonctions
             switch (choix) {
                 case "1": InterfaceUtilisateur.menu = Menu.AJOUTER_TACHE; break;                
-                case "2": InterfaceUtilisateur.menu = Menu.AFFICHER_TACHE; break;
+                case "2": InterfaceUtilisateur.menu = Menu.AFFICHER_TACHES; break;
                 case "3": InterfaceUtilisateur.menu = Menu.TERMINER_TACHE; break;
                 case "4": InterfaceUtilisateur.menu = Menu.PRIORITE_TACHE; break;
                 case "5": InterfaceUtilisateur.menu = Menu.ECHEANCE_TACHE; break;
@@ -672,6 +672,9 @@ Modifier une tâche
             "Statut : "+(switch (t.statut) {case A_FAIRE -> JAUNE; case TERMINE -> VERT;})+t.statut+NTRE+" [ ]\n"+
             "Priorité : "+(switch (t.priorite) {case BASSE -> GRIS; case NORMALE -> BLEU; case ELEVEE -> ROUGE;})+t.priorite+NTRE+" [ ]\n"+
             "Échéance : "+couleurEcheance(t.echeance)+echeanceString+NTRE+" [ ]\n"+
+            "\n"+
+            "Confirmer [ ]\n"+
+            "Annuler [ ]\n"+
 """
 
 x = Sélectionner
@@ -685,7 +688,9 @@ w = Précédent
             TITRE,
             STATUT,
             PRIORITE,
-            ECHEANCE
+            ECHEANCE,
+            CONFIRMER,
+            ANNULER
         }
         Position position = Position.TITRE;
 
@@ -693,14 +698,18 @@ w = Précédent
         SousRoutine positionnerCurseurStatut = () -> {System.out.print(curPos(9 + t.statut.toString().length() + 3, 8));};
         SousRoutine positionnerCurseurPriorite = () -> {System.out.print(curPos(11 + t.priorite.toString().length() + 3, 9));};
         SousRoutine positionnerCurseurEcheance = () -> {System.out.print(curPos(11 + echeanceString.length() + 3, 10));};
-        SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1, 15));};
+        SousRoutine positionnerCurseurConfirmer = () -> {System.out.print(curPos(12, 12));};
+        SousRoutine positionnerCurseurAnnuler = () -> {System.out.print(curPos(10, 13));};
+        SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1, 18));};
         SousRoutine effacerErreur = () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
         SousRoutineParam<Position> positionnerCurseur = (p)->{
             switch (p) {
-                case TITRE:    positionnerCurseurTitre.appeler(); break;
-                case STATUT:   positionnerCurseurStatut.appeler(); break;
-                case PRIORITE: positionnerCurseurPriorite.appeler(); break;
-                case ECHEANCE: positionnerCurseurEcheance.appeler(); break;
+                case TITRE:     positionnerCurseurTitre.appeler(); break;
+                case STATUT:    positionnerCurseurStatut.appeler(); break;
+                case PRIORITE:  positionnerCurseurPriorite.appeler(); break;
+                case ECHEANCE:  positionnerCurseurEcheance.appeler(); break;
+                case CONFIRMER: positionnerCurseurConfirmer.appeler(); break;
+                case ANNULER:   positionnerCurseurAnnuler.appeler(); break;
             }
         };
 
@@ -709,13 +718,42 @@ w = Précédent
             String rep = scanner.nextLine();
             effacerErreur.appeler();
             
-            switch (rep) {
+            switch (rep.toLowerCase()) {
                 case "x":
                     switch(position){
-                        case TITRE:    menu = Menu.TITRE_TACHE; break;
-                        case STATUT:   menu = Menu.STATUT_TACHE; break;
-                        case PRIORITE: menu = Menu.PRIORITE_TACHE; break;
-                        case ECHEANCE: menu = Menu.ECHEANCE_TACHE; break;
+                        case TITRE:     menu = Menu.TITRE_TACHE; break;
+                        case STATUT:    menu = Menu.STATUT_TACHE; break;
+                        case PRIORITE:  menu = Menu.PRIORITE_TACHE; break;
+                        case ECHEANCE:  menu = Menu.ECHEANCE_TACHE; break;
+                        case CONFIRMER: menu = Menu.PRINCIPAL; break;
+                        case ANNULER:
+                            boolean quitter = false;
+                            while (true){
+                                positionnerCurseurAnnuler.appeler();
+                                System.out.print(EFFACER_LIGNE+curX(1));
+                                System.out.print(JAUNE+"Êtes-vous sûr de vouloir abandonner les modifications? [o/N] : "+NTRE);
+                                rep = scanner.nextLine();
+                                effacerErreur.appeler();
+
+                                quitter = true;
+                                switch (rep.toLowerCase()) {
+                                    case "o": menu = Menu.AFFICHER_TACHES; break;
+                                    case "":
+                                    case "n":
+                                        positionnerCurseurAnnuler.appeler();
+                                        System.out.print(EFFACER_LIGNE+curX(1)+"Annuler [ ]"+curX(10));
+                                        quitter = false;
+                                        break;
+                                    default:
+                                        positionnerCurseurErreur.appeler();
+                                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer une lettre parmis 'o' et 'n'."+NTRE);
+                                        continue;
+                                }
+                                break;
+                            }
+                            if(!quitter){
+                                continue;
+                            }
                     }
                     break;
                 case "":
@@ -723,10 +761,12 @@ w = Précédent
                     positionnerCurseur.appeler(position);
                     System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
                     switch(position){
-                        case TITRE:    position = Position.STATUT; break;
-                        case STATUT:   position = Position.PRIORITE; break;
-                        case PRIORITE: position = Position.ECHEANCE; break;
-                        case ECHEANCE: position = Position.ECHEANCE; break;
+                        case TITRE:     position = Position.STATUT; break;
+                        case STATUT:    position = Position.PRIORITE; break;
+                        case PRIORITE:  position = Position.ECHEANCE; break;
+                        case ECHEANCE:  position = Position.CONFIRMER; break;
+                        case CONFIRMER: position = Position.ANNULER; break;
+                        case ANNULER:   position = Position.ANNULER; break;
                     }
                     positionnerCurseur.appeler(position);
                     continue;
@@ -734,10 +774,12 @@ w = Précédent
                     positionnerCurseur.appeler(position);
                     System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
                     switch(position){
-                        case TITRE:    position = Position.TITRE; break;
-                        case STATUT:   position = Position.TITRE; break;
-                        case PRIORITE: position = Position.STATUT; break;
-                        case ECHEANCE: position = Position.PRIORITE; break;
+                        case TITRE:     position = Position.TITRE; break;
+                        case STATUT:    position = Position.TITRE; break;
+                        case PRIORITE:  position = Position.STATUT; break;
+                        case ECHEANCE:  position = Position.PRIORITE; break;
+                        case CONFIRMER: position = Position.ECHEANCE; break;
+                        case ANNULER:   position = Position.CONFIRMER; break;
                     }
                     positionnerCurseur.appeler(position);
                     continue;
@@ -746,6 +788,39 @@ w = Précédent
                     System.out.println(ROUGE+"[ERREUR] Veuillez indiquer une lettre parmis 'x', 's' ou 'w'."+NTRE);
                     positionnerCurseur.appeler(position);
                     System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                    continue;
+            }
+            break;
+        }
+    }
+
+    public static void afficherTitreTache(){
+        SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1, 8));};
+        SousRoutine effacerErreur = () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
+
+        System.out.print(
+"""
+TASKFLOW
+
+Renommer une Tâche
+==================
+
+("""+GRIS+ITAL+"Nouvelle Tâche"+NTRE+") : ["+CURS+GRIS+"_".repeat(30)+NTRE+"]"+CURA
+        );
+        String rep = scanner.nextLine();
+        System.out.print(CURA+EFFACER_LIGNE_RESTE+CYAN+rep+NTRE+"]"+curLigne(1));
+        System.out.print(JAUNE+"Sauvegarder ? [O/n] : "+NTRE);
+        while(true){
+            rep = scanner.nextLine();
+            effacerErreur.appeler();
+
+            switch(rep.toLowerCase()){
+                case "":
+                case "o": menu = Menu.GERER_TACHE; break;
+                case "n": System.out.print(EFFACER_LIGNE+CURS+EFFACER_LIGNE_RESTE+GRIS+"_".repeat(30)+NTRE+"]"+CURA); break;
+                default:
+                    positionnerCurseurErreur.appeler();
+                    System.out.print(ROUGE+"[ERREUR] Veuillez indiquer une lettre entre 'o' et 'n'");
                     continue;
             }
             break;
