@@ -1282,6 +1282,45 @@ Modifier l'échéance d'une Tâche
         }
     }
 
+    public static void afficherMenuSauvegarde(){
+
+        boolean continuer = true;
+
+        System.out.println("Voulez-vous sauvegarder les changements effectués?\n");
+        System.out.println("1. Oui");
+        System.out.println("0. Non, retourner au menu principal");
+
+        while (continuer){
+            System.out.print("\nVotre choix : ");
+            String choix = scanner.nextLine().trim();
+            System.out.println();
+            switch(choix){
+                case "1":
+                    //le print sera remplacer par une fonction de sauvegarde
+                    System.out.println("Votre sauvegarde a été effectuée");
+                    InterfaceUtilisateur.menu = Menu.PRINCIPAL;
+                    continuer = false;
+                    break;
+
+                case "0": 
+                    System.out.println("Retour vers le menu principal");
+                    InterfaceUtilisateur.menu = Menu.PRINCIPAL;
+                    continuer = false;
+                    break;
+
+                default:
+                    System.out.println("Choix invalide. Veuillez chosir une option entre 0 ou 1.");
+                    break;
+                }
+                System.out.println();
+            }
+
+
+
+
+    }
+
+
     public static void afficherMenuQuitter() {
         InterfaceUtilisateur.quitter = true;
         System.out.println("Fermeture de TASKFLOW.");
