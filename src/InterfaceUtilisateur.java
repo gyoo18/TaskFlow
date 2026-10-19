@@ -1363,19 +1363,20 @@ Modifier l'échéance d'une Tâche
 
     //Fonction pour quitter le programme
     public static void afficherMenuQuitter() {
-        Scanner scannerQuitterPage = new Scanner(System.in);
-        System.out.println("Êtes-vous sûr de vouloir quitter ? (o/n)");
-        String reponseQuitter = scannerQuitterPage.nextLine();
-        if (reponseQuitter.equalsIgnoreCase("o")) {
+        System.out.println("Voulez-vous vraiment quitter le programme ? (O/N)");
+        String choixQuitter = scanner.nextLine().trim().toLowerCase();
+
+        if (choixQuitter.equals("o")) {
             System.out.println("Au revoir !");
             System.exit(0);
-        } else if (reponseQuitter.equalsIgnoreCase("n")) {
+            scanner.close();
+        } else if (choixQuitter.equals("n")) {
             System.out.println("Retour au menu principal.");
             InterfaceUtilisateur.menu = Menu.PRINCIPAL;
         } else {
-            System.out.println("Réponse invalide. Veuillez entrer 'o' pour oui ou 'n' pour non.");
+            System.out.println("Choix invalide. Veuillez entrer 'O' pour Oui ou 'N' pour Non.");
+            afficherMenuQuitter();
         }
-        scannerQuitterPage.close();
     }
 
     //TODO: Pour tests. Enlever lorsque toutes les fonctionnalités seront disponibles. 
