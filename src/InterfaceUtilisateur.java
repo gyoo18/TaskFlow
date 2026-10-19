@@ -1,6 +1,12 @@
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
@@ -12,6 +18,7 @@ public class InterfaceUtilisateur {
         AJOUTER_TACHE,
         AFFICHER_TACHE,
         TERMINER_TACHE,
+        GERER_TACHE,
         PRIORITE_TACHE,
         ECHEANCE_TACHE,
         SAUVEGARDER,
@@ -36,9 +43,10 @@ public class InterfaceUtilisateur {
         effacerEcran();
         switch(InterfaceUtilisateur.menu){
             case Menu.PRINCIPAL:        afficherMenuPrincipal(); break;
-            case Menu.AJOUTER_TACHE:    afficherAjouterUneTâche(); break;
-            case Menu.AFFICHER_TACHE:   erreurNonImplemente("Afficher une Tâche"); break;
+            case Menu.AJOUTER_TACHE:    afficherAjouterUneTache(); break;
+            case Menu.AFFICHER_TACHE:   afficherListeTaches(); break;
             case Menu.TERMINER_TACHE:   erreurNonImplemente("Terminer une Tâche"); break;
+            case Menu.GERER_TACHE:      erreurNonImplemente("Gérer une Tâche"); break;
             case Menu.PRIORITE_TACHE:   erreurNonImplemente("Gérer la Priorité d'une Tâche"); break;
             case Menu.ECHEANCE_TACHE:   erreurNonImplemente("Gérer l'Échéance d'une Tâche"); break;
             case Menu.SAUVEGARDER:      erreurNonImplemente("Sauvegarder"); break;
@@ -97,7 +105,7 @@ public class InterfaceUtilisateur {
         }
     }
 
-    public static void afficherAjouterUneTâche() {
+    public static void afficherAjouterUneTache() {
         //TODO éventuellement en faire sa propre classe
         //Essentiellement un struct
         class Tache{
@@ -401,6 +409,217 @@ public class InterfaceUtilisateur {
         }
     }
 
+    public static void afficherListeTaches(){
+        //TODO #22 Raccorder Menu Afficher Liste de Tâches à sa fonctionnalité
+
+        //TODO éventuellement en faire sa propre classe
+        //Essentiellement un struct
+        class Tache{
+            public enum Priorite{
+                BASSE,
+                NORMALE,
+                ELEVEE
+            }
+
+            public enum Statut{
+                A_FAIRE,
+                TERMINE
+            }
+
+            public long id = System.currentTimeMillis();
+            public String titre = "Nouvelle Tâche";
+            public Priorite priorite = Priorite.NORMALE;
+            public Calendar echeance = Calendar.getInstance();
+            public Statut statut = Statut.A_FAIRE;
+        }
+
+        final int MAX_TACHES_PAR_PAGE=10;
+
+        // Créer des tâches aléatoires
+        Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
+        Tache t;
+        for (int i = 0; i < tacheListe.length; i++) {
+            t = new Tache();
+            t.titre = "Tache "+i;
+            t.priorite = Tache.Priorite.values()[(int)(Math.random()*(Tache.Priorite.values().length-0.01))];
+            t.echeance.add(Calendar.MONTH,(int)(Math.random()));
+            t.echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*t.echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
+            t.echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(t.echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
+            t.echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
+            //t.echeance.add(Calendar.HOUR,(int)((float)i));
+            t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
+            tacheListe[i] = t;
+        }
+
+        // Trier les tâches selon leur échéance en mettant celles passées à la fin.
+        List<Tache> tacheAL = Arrays.asList(tacheListe);
+        Collections.sort(tacheAL, new Comparator<Tache>() {
+            @Override
+            public int compare(Tache t1, Tache t2) {
+                if(!(t1.echeance.getTimeInMillis() > System.currentTimeMillis() ^ t2.echeance.getTimeInMillis() > System.currentTimeMillis())){
+                    return t1.echeance.compareTo(t2.echeance);
+                }else if(t1.echeance.getTimeInMillis() > System.currentTimeMillis() && t2.echeance.getTimeInMillis() < System.currentTimeMillis()){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            }
+        });
+        tacheAL.toArray(tacheListe);
+        
+        int page=0;
+        int ligne=0;
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy, kk:mm:ss", Locale.getDefault());
+
+        SousRoutineParam<Integer> positionnerCurseurErreur = (n) -> {System.out.print(curPos(1, 15+Math.min(MAX_TACHES_PAR_PAGE, tacheListe.length-(n*MAX_TACHES_PAR_PAGE))));};
+        SousRoutineParam<Integer> effacerErreur = (n) -> {positionnerCurseurErreur.appeler(n); System.out.print(EFFACER_LIGNE);};
+
+        String[] nos = new String[MAX_TACHES_PAR_PAGE];
+        String[] titres = new String[MAX_TACHES_PAR_PAGE];
+        String[] statuts = new String[MAX_TACHES_PAR_PAGE];
+        String[] priorites = new String[MAX_TACHES_PAR_PAGE];
+        String[] echeances = new String[MAX_TACHES_PAR_PAGE];
+
+        int lNo = "No".length();
+        int lTitre = "Titre".length();
+        int lStatut = "Statut".length();
+        int lPriorite = "Priorité".length();
+        int lEcheance = "Échéance".length();
+        while(true){
+            effacerEcran();
+            
+            System.out.println("""
+TASKFLOW
+
+Liste de tâches
+===============
+
+"""+CURS        );
+
+            System.out.print(CURA+EFFACER_ECRAN_RESTE);
+            for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
+                nos[i] = Integer.toString(i+(page*MAX_TACHES_PAR_PAGE)+1);
+                
+                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                titres[i] = t.titre;
+                statuts[i] = t.statut.name();
+                priorites[i] = t.priorite.name();
+                echeances[i] = dateFormat.format(t.echeance.getTime());
+
+                lNo = Math.max(nos[i].length(), lNo);
+                lTitre = Math.max(titres[i].length(), lTitre);
+                lStatut = Math.max(statuts[i].length(), lStatut);
+                lPriorite = Math.max(priorites[i].length(), lPriorite);
+                lEcheance = Math.max(echeances[i].length(), lEcheance);
+            }
+
+            System.out.println(
+                "No"+(" ".repeat(lNo-"No".length()))+"  "+
+                "Titre"+(" ".repeat(lTitre-"Titre".length()))+"  "+
+                "Statut"+(" ".repeat(lStatut-"Statut".length()))+"  "+
+                "Priorité"+(" ".repeat(lPriorite-"Priorité".length()))+"  "+
+                "Échéance"+(" ".repeat(lEcheance-"Échéance".length()))+"  "+
+                "["+CURS+"x]=choisir"
+            );
+
+            for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
+                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                System.out.println( CYAN + 
+                    nos[i]+(" ".repeat(lNo-nos[i].length()))+"  "+
+                    titres[i]+(" ".repeat(lTitre-titres[i].length()))+"  "+(
+                        (switch (t.statut) {case A_FAIRE -> JAUNE; case TERMINE -> VERT;})+
+                        statuts[i]+"  "
+                    )+(
+                        (switch (t.priorite) {case BASSE -> GRIS; case NORMALE -> BLEU; case ELEVEE -> ROUGE;})+
+                        priorites[i]+(" ".repeat(lPriorite-priorites[i].length()))+"  "+NTRE
+                    )+
+                    GRAS + couleurEcheance(t.echeance) + echeances[i]+(" ".repeat(lEcheance-echeances[i].length())) + NTRE + "  " +
+                    "[ ]"
+                );
+            }
+
+            System.out.println(
+                "\n"+
+                "w = ligne précédente\n"+
+                "s ou ⮱ = prochaine ligne\n"+
+                "a = page précédente\n"+
+                "d = prochaine page\n"+
+                "x = modifier la tâche\n"+
+                "q = quitter"
+            );
+
+            ligne = 0;
+            boolean quitter = false;
+            System.out.print(CURA+curDY(1)+CURS);
+            while(true){
+                String rep = scanner.nextLine();
+                effacerErreur.appeler(page);
+
+                switch (rep.toLowerCase()) {
+                    case "a": 
+                        if (page != 0){
+                            page--;
+                        } else {
+                            System.out.print(CURA+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                            continue;
+                        }
+                        break;
+                    case "d": 
+                        if (page != Math.floorDiv(tacheListe.length, MAX_TACHES_PAR_PAGE)){
+                            page++;
+                        }else{
+                            System.out.print(CURA+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                            continue;
+                        }
+                        break;
+                    case "x":
+                        InterfaceUtilisateur.menu = Menu.GERER_TACHE;
+                        quitter = true;
+                        break;
+                    case "q":
+                        InterfaceUtilisateur.menu = Menu.PRINCIPAL;
+                        quitter = true;
+                        break;
+                    case "":
+                    case "s":
+                        if (ligne == tacheListe.length - page*MAX_TACHES_PAR_PAGE - 1 && page == Math.floorDiv(tacheListe.length, MAX_TACHES_PAR_PAGE)){
+                            System.out.print(CURA);
+                            continue;
+                        }else if (ligne == MAX_TACHES_PAR_PAGE-1){
+                            page++;
+                        }else{
+                            System.out.print(CURA+EFFACER_LIGNE_RESTE+" ]"+CURA+curDY(1)+CURS);
+                            ligne++;
+                            continue;
+                        }
+                        break;
+                    case "w":
+                        System.out.print(CURA+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                        if (ligne == 0 && page == 0){
+                            System.out.print(CURA);
+                            continue;
+                        }else if (ligne == 0){
+                            page--;
+                        }else{
+                            System.out.print(curDY(-1)+CURS);
+                            ligne--;
+                            continue;
+                        }
+                        break;
+                    default:
+                        positionnerCurseurErreur.appeler(page);
+                        System.out.print(ROUGE+"[ERREUR] Veuillez indiquer une lettre parmis 'w', 'a', 's', 'd', 'x' et 'q'"+NTRE);
+                        System.out.print(CURA+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                        continue;
+                }
+                break;
+            }
+
+            if (quitter) break;
+        }
+    }
+
     public static void afficherMenuQuitter() {
         InterfaceUtilisateur.quitter = true;
         System.out.println("Fermeture de TASKFLOW.");
@@ -419,6 +638,72 @@ public class InterfaceUtilisateur {
     }
 
     /**
+     * Renvoie une couleur RGB 0.0-1.0 entre le bleu foncé ([0.002,0.072,0.070] à 0.0)
+     * et le orange clair ([1, 0.75, 0.55] à 1) en passant par le mauve et le rouge, en
+     * fonction du facteur t.
+     * @param t
+     * @return new float[]{R, G, B} ∊ [0-1]³
+     */
+    public static float[] rampeCouleurMagma(float t){
+        // J'ai décidé d'utiliser des doubles pour aider à la lisibilité plus que pour un besoin de précision.
+        final double 𝝅 = Math.PI;
+
+        final double[] i = new double[]{-1/Math.sqrt(2),1/Math.sqrt(2),0};
+        final double[] j = new double[]{1/Math.sqrt(3),1/Math.sqrt(3),1/Math.sqrt(3)};
+        final double[] k = new double[]{-1/Math.sqrt(3),-1/Math.sqrt(3),1/Math.sqrt(3)};
+
+        if (t >= 0 && t <= 1){
+            double 𝜽 = 3*𝝅*t/4;
+            double r = t;
+            double z = t*Math.sqrt(3);
+
+            double R = r*Math.cos(𝜽)*i[0] + z*j[0] + r*Math.sin(𝜽)*k[0];
+            double G = r*Math.cos(𝜽)*i[1] + z*j[1] + r*Math.sin(𝜽)*k[1];
+            double B = r*Math.cos(𝜽)*i[2] + z*j[2] + r*Math.sin(𝜽)*k[2];
+
+            // mix( RGB, [1.0, 0.75, 0.50], t² )
+            R = (t*t)*(1.0 -R) + R;
+            G = (t*t)*(0.75-G) + G;
+            B = (t*t)*(0.50-B) + B;
+            return new float[]{(float)R, (float)G, (float)B};
+        }else if(t < 0){
+            return new float[]{0.11f,0.11f,0.11f};
+        }else{
+            return new float[]{1.0f,0.75f,0.50f};
+        }
+    }
+
+    /**
+     * Renvoie la couleur RGB de l'échéance d'une tâche selon la carte Magma (rampeCouleurMagma())
+     * Plus une tâche est près de son échéance, plus elle sera visible.
+     * La couleur s'étale sur 14 jours et plus de résolution est accordé près de l'échéance.
+     * @param echeance
+     * @return new float[]{R, G, B} ∊ [0-1]³
+     */
+    public static String couleurEcheance(Calendar echeance){
+        final double QUATORZE_JOURS_MILLIS=1209600000D;
+        float t = (float)((double)(echeance.getTimeInMillis() - System.currentTimeMillis())/QUATORZE_JOURS_MILLIS); // 0=0 et 1=14 jours
+        if(t >= 0.0){
+            // Transforme t pour avoir plus de résolution près de l'échéance
+            t = 1f/(12f*(t+0.0802f)) - 0.0387f;
+            t = (t*26.99f)/26f;
+
+            float[] coul = rampeCouleurMagma((2*t)%1);
+            if (t < 0.5){
+                return coul8b(coul[0], coul[1], coul[2]);
+            }else{
+                return surl8b(coul[0], coul[1], coul[2]);
+            }
+        }else{
+            return coul8b(0.2f,0.0f,0.0f);
+        }
+    }
+
+    // ===================================
+    // Fonctions et constantes d'affichage
+    // ===================================
+
+    /**
      * Appelle `cls` sur Windows et `clear` sur *UNIX/MacOS/*BSD
      */
     private static void effacerEcran(){
@@ -434,10 +719,6 @@ public class InterfaceUtilisateur {
             e.printStackTrace();
         }
     }
-
-    // ===================================
-    // Fonctions et constantes d'affichage
-    // ===================================
 
     /**Séquence d'échappement ANSI */
     private static final String ESC="\033[";
@@ -512,21 +793,21 @@ public class InterfaceUtilisateur {
     /**Met la couleur du surlignage en gris clair */
     private static final String SURL_GRIS_CLAIR=ESC+"47m";
     /**Met la couleur du surlignage en gris */
-    private static final String SURL_GRIS=ESC+"48m";
+    private static final String SURL_GRIS=ESC+"100m";
     /**Met la couleur du surlignage en rouge clair */
-    private static final String SURL_ROUGE_CLAIR=ESC+"100m";
+    private static final String SURL_ROUGE_CLAIR=ESC+"101m";
     /**Met la couleur du surlignage en vert clair */
-    private static final String SURL_VERT_CLAIR=ESC+"101m";
+    private static final String SURL_VERT_CLAIR=ESC+"102m";
     /**Met la couleur du surlignage en jaune clair */
-    private static final String SURL_JAUNE_CLAIR=ESC+"102m";
+    private static final String SURL_JAUNE_CLAIR=ESC+"103m";
     /**Met la couleur du surlignage en bleu clair */
-    private static final String SURL_BLEU_CLAIR=ESC+"103m";
+    private static final String SURL_BLEU_CLAIR=ESC+"104m";
     /**Met la couleur du surlignage en magenta clair */
-    private static final String SURL_MAGENTA_CLAIR=ESC+"104m";
+    private static final String SURL_MAGENTA_CLAIR=ESC+"105m";
     /**Met la couleur du surlignage en cyan clair */
-    private static final String SURL_CYAN_CLAIR=ESC+"105m";
+    private static final String SURL_CYAN_CLAIR=ESC+"106m";
     /**Met la couleur du surlignage en blanc */
-    private static final String SURL_BLANC=ESC+"106m";
+    private static final String SURL_BLANC=ESC+"107m";
     /**Efface depuis le curseur jusqu'à la fin de l'écran */
     private static final String EFFACER_ECRAN_RESTE=ESC+"0J";
     /**Efface depuis le début de l'écran jusqu'au curseur */
@@ -557,7 +838,7 @@ public class InterfaceUtilisateur {
      */
     private static String curDX(int x){
         if (x < 0){
-            return ESC+x+'D';
+            return ESC+-x+'D';
         }else{
             return ESC+x+'C';
         }
@@ -570,7 +851,7 @@ public class InterfaceUtilisateur {
      */
     private static String curDY(int y){
         if (y < 0){
-            return ESC+y+'A';
+            return ESC+-y+'A';
         }else{
             return ESC+y+'B';
         }
@@ -582,7 +863,7 @@ public class InterfaceUtilisateur {
      */
     private static String curLigne(int n){
         if (n < 0){
-            return ESC+n+'F';
+            return ESC+-n+'F';
         }else{
             return ESC+n+'E';
         }
@@ -604,14 +885,43 @@ public class InterfaceUtilisateur {
      */
     private static String defiler(int n){
         if (n < 0){
-            return ESC+n+"S";
+            return ESC+-n+"S";
         }else{
             return ESC+n+"T";
         }
+    }
+
+    /**
+     * Met la couleur de la police à la couleur RGB 8bits spécifiée.
+     * 225 couleurs sont possibles (R,G,B ∊ {0;5}), ce qui fait en réalité 7,8 bits.
+     * @param r ∊ [0;1]
+     * @param g ∊ [0;1]
+     * @param b ∊ [0;1]
+     * @return \033[38;5;int(r*215.99 + g*35.99 + b*5.99 + 16)m
+     */
+    private static String coul8b (float r, float g, float b){
+        return ESC+"38;5;"+((int)(r*5.99)*36 + (int)(g*5.99)*6 + (int)(b*5.99) + 16)+"m";
+    }
+
+    /**
+     * Met la couleur du surlignage à la couleur RGB 8bits spécifiée.
+     * 225 couleurs sont possibles (R,G,B ∊ {0;5}), ce qui fait en réalité 7,8 bits.
+     * @param r ∊ [0;1]
+     * @param g ∊ [0;1]
+     * @param b ∊ [0;1]
+     * @return \033[48;5;int(r*215.99 + g*35.99 + b*5.99 + 16)m
+     */
+    private static String surl8b (float r, float g, float b){
+        return ESC+"48;5;"+((int)(r*5.99)*36 + (int)(g*5.99)*6 + (int)(b*5.99) + 16)+"m";
     }
 }
 
 @FunctionalInterface 
 abstract interface SousRoutine {
     void appeler();
+}
+
+@FunctionalInterface 
+abstract interface SousRoutineParam<T> {
+    void appeler(T t);
 }
