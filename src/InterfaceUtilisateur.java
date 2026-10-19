@@ -1320,10 +1320,61 @@ Modifier l'échéance d'une Tâche
 
     }
 
+    public static void afficherMenuAjouterTache(){
+        
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Votre choix : 1");
+        System.out.println();
+        System.out.println("AJOUTER UNE TÂCHE");
+        System.out.println();
+
+    
+        System.out.print("Titre : ");
+        String titre = scanner.nextLine();
+
+        System.out.println();
+        System.out.println("Priorité : Basse, Normale ou Élevée");
+        System.out.println("Appuyez sur Entrée pour choisir Normale.");
+        System.out.print("Votre priorité : ");
+        String priorite = scanner.nextLine();
+        if (priorite.isEmpty()) {
+            priorite = "Normale";
+        }
+
+        System.out.println();
+        System.out.println("Échéance au format AAAA-MM-JJ");
+        System.out.println("Appuyez sur Entrée pour ne pas préciser d’échéance.");
+        System.out.print("Votre échéance : ");
+        String echeance = scanner.nextLine();
+
+        System.out.println();
+        System.out.println("Tâche ajoutée avec succès.");
+        System.out.println();
+        System.out.println("Identifiant : 1");
+        System.out.println("Titre : " + titre);
+        System.out.println("Priorité : " + priorite);
+        System.out.println("Échéance : " + (echeance.isEmpty() ? "Aucune" : echeance));
+        System.out.println("Statut : À faire");
+
+        scanner.close();
+        
+    }
+
+    //Fonction pour quitter le programme
     public static void afficherMenuQuitter() {
-        InterfaceUtilisateur.quitter = true;
-        System.out.println("Fermeture de TASKFLOW.");
+        Scanner scannerQuitterPage = new Scanner(System.in);
+        System.out.println("Êtes-vous sûr de vouloir quitter ? (o/n)");
+        String reponseQuitter = scannerQuitterPage.nextLine();
+        if (reponseQuitter.equalsIgnoreCase("o")) {
+            System.out.println("Au revoir !");
+            System.exit(0);
+        } else if (reponseQuitter.equalsIgnoreCase("n")) {
+            System.out.println("Retour au menu principal.");
+        } else {
+            System.out.println("Réponse invalide. Veuillez entrer 'o' pour oui ou 'n' pour non.");
+        }
+        scannerQuitterPage.close();
     }
 
     //TODO: Pour tests. Enlever lorsque toutes les fonctionnalités seront disponibles. 
