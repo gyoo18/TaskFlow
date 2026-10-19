@@ -67,7 +67,7 @@ public class InterfaceUtilisateur {
     public static void afficherMenuPrincipal() {
         boolean continuer = true;
 
-        System.out.println("TASKFLOW - Gestion des tâches\n");
+        System.out.println(BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊 - Gestion des tâches\n");
 
         //TODO: modifier lorsque les fichiers de sauvegarde existeront
         System.out.println("Aucun fichier de données trouvé."); 
@@ -84,7 +84,8 @@ public class InterfaceUtilisateur {
         while (continuer){
             //afficherMenu();
 
-            System.out.print("\nVotre choix : ");
+            System.out.println("\nVotre choix : "+CURS);
+            System.out.print(GRIS+ITAL+"Version de test, aucune fonctionalité"+NTRE+CURA);
             String choix = scanner.nextLine().trim();
             System.out.println();
 
@@ -171,7 +172,7 @@ public class InterfaceUtilisateur {
 
             //TODO réusiner pour faire un bon système de menu.
             System.out.print(
-                "TASKFLOW\n"+
+                BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+
                 "\n"+
                 "Ajouter une tâche\n"+
                 "=================\n"+
@@ -195,7 +196,7 @@ public class InterfaceUtilisateur {
                 }
                 positionnerCurseurTitre.appeler();
                 System.out.print(EFFACER_LIGNE_RESTE);
-                System.out.print(" "+tache.titre+" ]");
+                System.out.print(" "+CYAN+tache.titre+NTRE+" ]");
             }
 
             // Lire la priorité
@@ -211,18 +212,18 @@ public class InterfaceUtilisateur {
                 switch(rep){
                     case "1":
                         System.out.print(curX(0)+EFFACER_LIGNE); 
-                        System.out.print("Priorité : Basse");
+                        System.out.print("Priorité : "+GRIS+"Basse"+NTRE);
                         tache.priorite = Tache.Priorite.BASSE;
                         break;
                     case "":
                     case "2":
                         System.out.print(curX(0)+EFFACER_LIGNE);
-                        System.out.print("Priorité : Normale");
+                        System.out.print("Priorité : "+BLEU+"Normale"+NTRE);
                         tache.priorite = Tache.Priorite.NORMALE;
                         break;
                     case "3":
                         System.out.print(curX(0)+EFFACER_LIGNE);
-                        System.out.print("Priorité : Élevée");
+                        System.out.print("Priorité : "+ROUGE+"Élevée"+NTRE);
                         tache.priorite = Tache.Priorite.ELEVEE;
                         break;
                     default:
@@ -381,7 +382,7 @@ public class InterfaceUtilisateur {
                         continue;
                     }
                 }
-                System.out.print(minute);
+                System.out.print(EFFACER_LIGNE+curX(1)+"Echeance : "+couleurEcheance(tache.echeance)+annee+" "+mois+" "+jour+" à "+heure+"h "+minute+"m"+NTRE);
                 tache.echeance.set(Calendar.MINUTE, minute);
                 break;
             }
@@ -389,7 +390,7 @@ public class InterfaceUtilisateur {
             // Confirmer
             {
                 positionnerCurseurConfirmer.appeler();
-                System.out.print("Enregistrer la nouvelle tâche ? ["+GRIS+ITAL+"(o=Oui)| n=Non | a=Annuler"+NTRE+" ] : ");
+                System.out.print(JAUNE+"Enregistrer la nouvelle tâche ? "+NTRE+"["+GRIS+ITAL+"(o=Oui)| n=Non | a=Annuler"+NTRE+" ] : ");
                 String confirmation = scanner.nextLine().strip().toLowerCase();
                 positionnerCurseurConfirmer.appeler();
                 System.out.print(EFFACER_LIGNE);
@@ -495,8 +496,8 @@ public class InterfaceUtilisateur {
         while(true){
             effacerEcran();
             
-            System.out.println("""
-TASKFLOW
+            System.out.println(
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Liste de tâches
 ===============
@@ -663,8 +664,8 @@ Liste de tâches
         String echeanceString = dateFormat.format(t.echeance.getTime());
 
 
-        System.out.println("""
-TASKFLOW
+        System.out.println(
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Modifier une tâche
 ==================
@@ -806,8 +807,7 @@ w = Précédent
         SousRoutine effacerErreur = () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
 
         System.out.print(
-"""
-TASKFLOW
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Renommer une Tâche
 ==================
@@ -849,8 +849,7 @@ Renommer une Tâche
         String titre = "Nouvelle Tâche";
         Statut statut = Statut.values()[(int)(Math.random()*Statut.values().length)];
         System.out.print(
-"""
-TASKFLOW
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Changer le statut d'une Tâche
 =============================
@@ -960,8 +959,7 @@ Changer le statut d'une Tâche
         String titre = "Nouvelle Tâche";
         Priorite statut = Priorite.values()[(int)(Math.random()*Priorite.values().length)];
         System.out.print(
-"""
-TASKFLOW
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Changer la Priorité d'une Tâche
 ===============================
@@ -1101,8 +1099,7 @@ Changer la Priorité d'une Tâche
         int minute = echeance.get(Calendar.MINUTE);
 
         System.out.print(
-"""
-TASKFLOW
+BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
 Modifier l'échéance d'une Tâche
 ===============================
