@@ -19,7 +19,6 @@ public class InterfaceUtilisateur {
         PRINCIPAL,
         AJOUTER_TACHE,
         AFFICHER_TACHES,
-        TERMINER_TACHE,
         GERER_TACHE,
         TITRE_TACHE,
         STATUT_TACHE,
@@ -49,7 +48,6 @@ public class InterfaceUtilisateur {
             case Menu.PRINCIPAL:        afficherMenuPrincipal(); break;
             case Menu.AJOUTER_TACHE:    afficherAjouterUneTache(); break;
             case Menu.AFFICHER_TACHES:   afficherListeTaches(); break;
-            case Menu.TERMINER_TACHE:   erreurNonImplemente("Terminer une Tâche"); break;
             case Menu.GERER_TACHE:      afficherGererTache(); break;
             case Menu.TITRE_TACHE:      afficherTitreTache(); break;
             case Menu.STATUT_TACHE:     afficherStatutTache(); break;
@@ -75,10 +73,7 @@ public class InterfaceUtilisateur {
 
         System.out.println("1. Ajouter une tâche");
         System.out.println("2. Afficher les tâches");
-        System.out.println("3. Marquer une tâche comme terminée");
-        System.out.println("4. Modifier la priorité d'une tâche");
-        System.out.println("5. Gérer l'échéance d'une tâche");
-        System.out.println("6. Sauvegarder les données");
+        System.out.println("3. Sauvegarder les données");
         System.out.println("0. Quitter");
 
         while (continuer){
@@ -94,10 +89,7 @@ public class InterfaceUtilisateur {
             switch (choix) {
                 case "1": InterfaceUtilisateur.menu = Menu.AJOUTER_TACHE; break;                
                 case "2": InterfaceUtilisateur.menu = Menu.AFFICHER_TACHES; break;
-                case "3": InterfaceUtilisateur.menu = Menu.TERMINER_TACHE; break;
-                case "4": InterfaceUtilisateur.menu = Menu.PRIORITE_TACHE; break;
-                case "5": InterfaceUtilisateur.menu = Menu.ECHEANCE_TACHE; break;
-                case "6": InterfaceUtilisateur.menu = Menu.SAUVEGARDER; break;
+                case "3": InterfaceUtilisateur.menu = Menu.SAUVEGARDER; break;
                 //TODO: ajouter la vraie fonctionnalité pour quitter
                 case "0": InterfaceUtilisateur.menu = Menu.QUITTER; break;
 
