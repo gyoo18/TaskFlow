@@ -19,6 +19,8 @@ public class InterfaceUtilisateur {
         AFFICHER_TACHE,
         TERMINER_TACHE,
         GERER_TACHE,
+        TITRE_TACHE,
+        STATUT_TACHE,
         PRIORITE_TACHE,
         ECHEANCE_TACHE,
         SAUVEGARDER,
@@ -46,7 +48,9 @@ public class InterfaceUtilisateur {
             case Menu.AJOUTER_TACHE:    afficherAjouterUneTache(); break;
             case Menu.AFFICHER_TACHE:   afficherListeTaches(); break;
             case Menu.TERMINER_TACHE:   erreurNonImplemente("Terminer une Tâche"); break;
-            case Menu.GERER_TACHE:      erreurNonImplemente("Gérer une Tâche"); break;
+            case Menu.GERER_TACHE:      afficherGererTache(); break;
+            case Menu.TITRE_TACHE:      erreurNonImplemente("Gérer le titre d'une Tâche"); break;
+            case Menu.STATUT_TACHE:     erreurNonImplemente("Gérer le statut d'une Tâche"); break;
             case Menu.PRIORITE_TACHE:   erreurNonImplemente("Gérer la Priorité d'une Tâche"); break;
             case Menu.ECHEANCE_TACHE:   erreurNonImplemente("Gérer l'Échéance d'une Tâche"); break;
             case Menu.SAUVEGARDER:      erreurNonImplemente("Sauvegarder"); break;
@@ -546,7 +550,9 @@ Liste de tâches
                 "a = page précédente\n"+
                 "d = prochaine page\n"+
                 "x = modifier la tâche\n"+
-                "q = quitter"
+                "q = quitter\n"+
+                "\n"+
+                GRIS+ITAL+"Version de test, fausses tâches"+NTRE
             );
 
             ligne = 0;
@@ -620,6 +626,132 @@ Liste de tâches
         }
     }
 
+    public static void afficherGererTache(){
+        //TODO éventuellement en faire sa propre classe
+        //Essentiellement un struct
+        class Tache{
+            public enum Priorite{
+                BASSE,
+                NORMALE,
+                ELEVEE
+            }
+
+            public enum Statut{
+                A_FAIRE,
+                TERMINE
+            }
+
+            public long id = System.currentTimeMillis();
+            public String titre = "Nouvelle Tâche";
+            public Priorite priorite = Priorite.NORMALE;
+            public Calendar echeance = Calendar.getInstance();
+            public Statut statut = Statut.A_FAIRE;
+        }
+
+        Tache t = new Tache();
+        t.titre = "Nouvelle Tâche";
+        t.priorite = Tache.Priorite.values()[(int)(Math.random()*(Tache.Priorite.values().length-0.01))];
+        t.echeance.add(Calendar.MONTH,(int)(Math.random()));
+        t.echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*t.echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
+        t.echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(t.echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
+        t.echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
+        t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy, kk:mm:ss", Locale.getDefault());
+        String echeanceString = dateFormat.format(t.echeance.getTime());
+
+
+        System.out.println("""
+TASKFLOW
+
+Modifier une tâche
+==================
+
+"""         +CYAN+t.titre+NTRE+" [ ]\n"+
+            "-".repeat(t.titre.length())+"\n"+
+            "Statut : "+(switch (t.statut) {case A_FAIRE -> JAUNE; case TERMINE -> VERT;})+t.statut+NTRE+" [ ]\n"+
+            "Priorité : "+(switch (t.priorite) {case BASSE -> GRIS; case NORMALE -> BLEU; case ELEVEE -> ROUGE;})+t.priorite+NTRE+" [ ]\n"+
+            "Échéance : "+couleurEcheance(t.echeance)+echeanceString+NTRE+" [ ]\n"+
+"""
+
+x = Sélectionner
+s ou ⮱ = Prochain
+w = Précédent
+
+"""+GRIS+ITAL+"Version de test, fausse tâche"+NTRE
+            );
+
+        enum Position{
+            TITRE,
+            STATUT,
+            PRIORITE,
+            ECHEANCE
+        }
+        Position position = Position.TITRE;
+
+        SousRoutine positionnerCurseurTitre = () -> {System.out.print(curPos(t.titre.length() + 3, 6));};
+        SousRoutine positionnerCurseurStatut = () -> {System.out.print(curPos(9 + t.statut.toString().length() + 3, 8));};
+        SousRoutine positionnerCurseurPriorite = () -> {System.out.print(curPos(11 + t.priorite.toString().length() + 3, 9));};
+        SousRoutine positionnerCurseurEcheance = () -> {System.out.print(curPos(11 + echeanceString.length() + 3, 10));};
+        SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1, 15));};
+        SousRoutine effacerErreur = () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
+        SousRoutineParam<Position> positionnerCurseur = (p)->{
+            switch (p) {
+                case TITRE:    positionnerCurseurTitre.appeler(); break;
+                case STATUT:   positionnerCurseurStatut.appeler(); break;
+                case PRIORITE: positionnerCurseurPriorite.appeler(); break;
+                case ECHEANCE: positionnerCurseurEcheance.appeler(); break;
+            }
+        };
+
+        positionnerCurseurTitre.appeler();
+        while(true){
+            String rep = scanner.nextLine();
+            effacerErreur.appeler();
+            
+            switch (rep) {
+                case "x":
+                    switch(position){
+                        case TITRE:    menu = Menu.TITRE_TACHE; break;
+                        case STATUT:   menu = Menu.STATUT_TACHE; break;
+                        case PRIORITE: menu = Menu.PRIORITE_TACHE; break;
+                        case ECHEANCE: menu = Menu.ECHEANCE_TACHE; break;
+                    }
+                    break;
+                case "":
+                case "s":
+                    positionnerCurseur.appeler(position);
+                    System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                    switch(position){
+                        case TITRE:    position = Position.STATUT; break;
+                        case STATUT:   position = Position.PRIORITE; break;
+                        case PRIORITE: position = Position.ECHEANCE; break;
+                        case ECHEANCE: position = Position.ECHEANCE; break;
+                    }
+                    positionnerCurseur.appeler(position);
+                    continue;
+                case "w":
+                    positionnerCurseur.appeler(position);
+                    System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                    switch(position){
+                        case TITRE:    position = Position.TITRE; break;
+                        case STATUT:   position = Position.TITRE; break;
+                        case PRIORITE: position = Position.STATUT; break;
+                        case ECHEANCE: position = Position.PRIORITE; break;
+                    }
+                    positionnerCurseur.appeler(position);
+                    continue;
+                default:
+                    positionnerCurseurErreur.appeler();
+                    System.out.println(ROUGE+"[ERREUR] Veuillez indiquer une lettre parmis 'x', 's' ou 'w'."+NTRE);
+                    positionnerCurseur.appeler(position);
+                    System.out.print(CURS+EFFACER_LIGNE_RESTE+" ]"+CURA);
+                    continue;
+            }
+            break;
+        }
+    }
+
     public static void afficherMenuQuitter() {
         InterfaceUtilisateur.quitter = true;
         System.out.println("Fermeture de TASKFLOW.");
@@ -638,8 +770,8 @@ Liste de tâches
     }
 
     /**
-     * Renvoie une couleur RGB 0.0-1.0 entre le bleu foncé ([0.002,0.072,0.070] à 0.0)
-     * et le orange clair ([1, 0.75, 0.55] à 1) en passant par le mauve et le rouge, en
+     * Renvoie une couleur RGB 0.0-1.0 entre le vert foncé ([0.002,0.072,0.070] à 0.0)
+     * et le orange clair ([1, 0.75, 0.50] à 1) en passant par le bleu et le mauve, en
      * fonction du facteur t.
      * @param t
      * @return new float[]{R, G, B} ∊ [0-1]³
@@ -674,7 +806,7 @@ Liste de tâches
     }
 
     /**
-     * Renvoie la couleur RGB de l'échéance d'une tâche selon la carte Magma (rampeCouleurMagma())
+     * Renvoie le code ANSI de la couleur 8bit de l'échéance d'une tâche selon la carte Magma (rampeCouleurMagma())
      * Plus une tâche est près de son échéance, plus elle sera visible.
      * La couleur s'étale sur 14 jours et plus de résolution est accordé près de l'échéance.
      * @param echeance
