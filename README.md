@@ -1,11 +1,11 @@
-# Mini projet 1 - Organisation agile et développement collaboratif
+# Mini projet 1 - Organisation agile et développement collaboratif - TASKFLOW
 
 ## Travail par : 
-Hugo Thivierge - THIH66360209  
-Sébastien Roussel -  
-Vincent Godbout - GODV66300500
-Félix Ladouceur -  
-Francis Lapointe -
+- Hugo Thivierge - THIH66360209  
+- Sébastien Roussel - ROUS77050209
+- Vincent Godbout - GODV66300500
+- Félix Ladouceur - LADF71260305
+- Francis Lapointe - LAPF24039801
 
 ## Fonctionnalités de l'application :
 L'application est un gestionnaire de tâches en ligne de commande qui propose les fonctionnalités suivantes :
@@ -21,7 +21,9 @@ L'application est un gestionnaire de tâches en ligne de commande qui propose le
 **Outils optionnels** : Aucun outil externe requis.  
 
 ## Commandes pour compiler et exécuter l'application :  
-Commandes ici  
+1. Décompresser le fichier zip du projet dans un dossier désiré.
+2. Naviguer jusqu'a l'emplacement où le zip du projet a été décompressé avec la ligne de commande.
+3. Utiliser la commande suivante à l'emplacement des fichiers .java : `javac *.java ` suivi de `java Main`
 
 ## Exemple d'utilisation :  
 Exemple ici  
