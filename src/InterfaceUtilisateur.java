@@ -389,27 +389,10 @@ public class InterfaceUtilisateur {
     }
 
     public static void afficherListeTaches(){
-        //TODO #22 Raccorder Menu Afficher Liste de Tâches à sa fonctionnalité
 
         final int MAX_TACHES_PAR_PAGE=10;
 
-        // Créer des tâches aléatoires
-        Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
-        Tache t;
-        for (int i = 0; i < tacheListe.length; i++) {
-            t = new Tache();
-            t.titre = "Tache "+i;
-            t.priorite = Tache.Priorite.values()[(int)(Math.random()*(Tache.Priorite.values().length-0.01))];
-            t.echeance.add(Calendar.MONTH,(int)(Math.random()));
-            t.echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*t.echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
-            t.echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(t.echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
-            t.echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
-            //t.echeance.add(Calendar.HOUR,(int)((float)i));
-            t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
-            tacheListe[i] = t;
-        }
-        //Tache[] tacheListe = listeTaches.toArray(new Tache[0]);
-        //Tache t;
+        Tache[] tacheListe = Donnees.avoirListeTaches();
         // Trier les tâches selon leur échéance en mettant celles passées à la fin.
         List<Tache> tacheAL = Arrays.asList(tacheListe);
         Collections.sort(tacheAL, new Comparator<Tache>() {
@@ -460,7 +443,7 @@ Liste de tâches
             for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
                 nos[i] = Integer.toString(i+(page*MAX_TACHES_PAR_PAGE)+1);
                 
-                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                Tache t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
                 titres[i] = t.titre;
                 statuts[i] = t.statut.name();
                 priorites[i] = t.priorite.name();
@@ -483,7 +466,7 @@ Liste de tâches
             );
 
             for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
-                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                Tache t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
                 System.out.println( CYAN + 
                     nos[i]+(" ".repeat(lNo-nos[i].length()))+"  "+
                     titres[i]+(" ".repeat(lTitre-titres[i].length()))+"  "+(
