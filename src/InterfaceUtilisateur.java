@@ -5,11 +5,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.concurrent.Callable;
 
 import javax.swing.text.Position;
 
@@ -103,24 +101,6 @@ public class InterfaceUtilisateur {
             System.out.println();
         }
     }
-
-    public static class Tache {
-        public enum Priorite {
-            BASSE, NORMALE, ELEVEE
-        }
-
-        public enum Statut {
-            A_FAIRE, TERMINE
-        }
-
-        public long id = System.currentTimeMillis();
-        public String titre = "Nouvelle Tâche";
-        public Priorite priorite = Priorite.NORMALE;
-        public Calendar echeance = Calendar.getInstance();
-        public Statut statut = Statut.A_FAIRE;
-    }
-
-    private static List<Tache> listeTaches = new ArrayList<>();
 
     public static void afficherAjouterUneTache() {
 
@@ -386,7 +366,7 @@ public class InterfaceUtilisateur {
                 System.out.print(EFFACER_LIGNE);
 
                 if (confirmation.equals("o") || confirmation.length() == 0){
-                    listeTaches.add(tache);
+                    Donnees.ajouterTache(tache);
 
                     System.out.println();
                     System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
@@ -414,7 +394,7 @@ public class InterfaceUtilisateur {
         final int MAX_TACHES_PAR_PAGE=10;
 
         // Créer des tâches aléatoires
-        /*Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
+        Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
         Tache t;
         for (int i = 0; i < tacheListe.length; i++) {
             t = new Tache();
@@ -427,9 +407,9 @@ public class InterfaceUtilisateur {
             //t.echeance.add(Calendar.HOUR,(int)((float)i));
             t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
             tacheListe[i] = t;
-        }*/
-        Tache[] tacheListe = listeTaches.toArray(new Tache[0]);
-        Tache t;
+        }
+        //Tache[] tacheListe = listeTaches.toArray(new Tache[0]);
+        //Tache t;
         // Trier les tâches selon leur échéance en mettant celles passées à la fin.
         List<Tache> tacheAL = Arrays.asList(tacheListe);
         Collections.sort(tacheAL, new Comparator<Tache>() {
