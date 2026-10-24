@@ -104,27 +104,25 @@ public class InterfaceUtilisateur {
         }
     }
 
-    public static void afficherAjouterUneTache() {
-        //TODO éventuellement en faire sa propre classe
-        //Essentiellement un struct
-        class Tache{
-            public enum Priorite{
-                BASSE,
-                NORMALE,
-                ELEVEE
-            }
-
-            public enum Statut{
-                A_FAIRE,
-                TERMINE
-            }
-
-            public long id = System.currentTimeMillis();
-            public String titre = "Nouvelle Tâche";
-            public Priorite priorite = Priorite.NORMALE;
-            public Calendar echeance = Calendar.getInstance();
-            public Statut statut = Statut.A_FAIRE;
+    public static class Tache {
+        public enum Priorite {
+            BASSE, NORMALE, ELEVEE
         }
+
+        public enum Statut {
+            A_FAIRE, TERMINE
+        }
+
+        public long id = System.currentTimeMillis();
+        public String titre = "Nouvelle Tâche";
+        public Priorite priorite = Priorite.NORMALE;
+        public Calendar echeance = Calendar.getInstance();
+        public Statut statut = Statut.A_FAIRE;
+    }
+
+    private static List<Tache> listeTaches = new ArrayList<>();
+
+    public static void afficherAjouterUneTache() {
 
         Tache tache = new Tache();
 
@@ -388,6 +386,8 @@ public class InterfaceUtilisateur {
                 System.out.print(EFFACER_LIGNE);
 
                 if (confirmation.equals("o") || confirmation.length() == 0){
+                    listeTaches.add(tache);
+
                     System.out.println();
                     System.out.println(JAUNE+"La tâche sera enregistrée"+NTRE);
                     System.out.println(GRIS+ITAL+"Version de test, la tâche ne sera pas enregistrée."+NTRE);
@@ -411,31 +411,10 @@ public class InterfaceUtilisateur {
     public static void afficherListeTaches(){
         //TODO #22 Raccorder Menu Afficher Liste de Tâches à sa fonctionnalité
 
-        //TODO éventuellement en faire sa propre classe
-        //Essentiellement un struct
-        class Tache{
-            public enum Priorite{
-                BASSE,
-                NORMALE,
-                ELEVEE
-            }
-
-            public enum Statut{
-                A_FAIRE,
-                TERMINE
-            }
-
-            public long id = System.currentTimeMillis();
-            public String titre = "Nouvelle Tâche";
-            public Priorite priorite = Priorite.NORMALE;
-            public Calendar echeance = Calendar.getInstance();
-            public Statut statut = Statut.A_FAIRE;
-        }
-
         final int MAX_TACHES_PAR_PAGE=10;
 
         // Créer des tâches aléatoires
-        Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
+        /*Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
         Tache t;
         for (int i = 0; i < tacheListe.length; i++) {
             t = new Tache();
@@ -448,8 +427,9 @@ public class InterfaceUtilisateur {
             //t.echeance.add(Calendar.HOUR,(int)((float)i));
             t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
             tacheListe[i] = t;
-        }
-
+        }*/
+        Tache[] tacheListe = listeTaches.toArray(new Tache[0]);
+        Tache t;
         // Trier les tâches selon leur échéance en mettant celles passées à la fin.
         List<Tache> tacheAL = Arrays.asList(tacheListe);
         Collections.sort(tacheAL, new Comparator<Tache>() {
@@ -622,26 +602,6 @@ Liste de tâches
     }
 
     public static void afficherGererTache(){
-        //TODO éventuellement en faire sa propre classe
-        //Essentiellement un struct
-        class Tache{
-            public enum Priorite{
-                BASSE,
-                NORMALE,
-                ELEVEE
-            }
-
-            public enum Statut{
-                A_FAIRE,
-                TERMINE
-            }
-
-            public long id = System.currentTimeMillis();
-            public String titre = "Nouvelle Tâche";
-            public Priorite priorite = Priorite.NORMALE;
-            public Calendar echeance = Calendar.getInstance();
-            public Statut statut = Statut.A_FAIRE;
-        }
 
         Tache t = new Tache();
         t.titre = "Nouvelle Tâche";
@@ -1318,47 +1278,6 @@ Modifier l'échéance d'une Tâche
 
 
 
-    }
-
-    public static void afficherMenuAjouterTache(){
-        
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Votre choix : 1");
-        System.out.println();
-        System.out.println("AJOUTER UNE TÂCHE");
-        System.out.println();
-
-    
-        System.out.print("Titre : ");
-        String titre = scanner.nextLine();
-
-        System.out.println();
-        System.out.println("Priorité : Basse, Normale ou Élevée");
-        System.out.println("Appuyez sur Entrée pour choisir Normale.");
-        System.out.print("Votre priorité : ");
-        String priorite = scanner.nextLine();
-        if (priorite.isEmpty()) {
-            priorite = "Normale";
-        }
-
-        System.out.println();
-        System.out.println("Échéance au format AAAA-MM-JJ");
-        System.out.println("Appuyez sur Entrée pour ne pas préciser d’échéance.");
-        System.out.print("Votre échéance : ");
-        String echeance = scanner.nextLine();
-
-        System.out.println();
-        System.out.println("Tâche ajoutée avec succès.");
-        System.out.println();
-        System.out.println("Identifiant : 1");
-        System.out.println("Titre : " + titre);
-        System.out.println("Priorité : " + priorite);
-        System.out.println("Échéance : " + (echeance.isEmpty() ? "Aucune" : echeance));
-        System.out.println("Statut : À faire");
-
-        scanner.close();
-        
     }
 
     //Fonction pour quitter le programme
