@@ -41,12 +41,12 @@ L'application est un gestionnaire de tâches en ligne de commande qui propose le
 Exemple ici  
 
 ## Format et emplacement du fichier de données :  
-Le fichier de donée est stocké à la racine du projet sous le nom de *fichier_sauvegarde.csv*. Nous avons décidé d'utiliser le format csv pour sa simplicité et sa structure tabulaire. Cela simplifie la conversion des données en objet java tout en restant facilement lisible par l'humain. 
+Le fichier de données est stocké à la racine du projet sous le nom de *fichier_sauvegarde.csv*. Nous avons décidé d'utiliser le format csv pour sa simplicité et sa structure tabulaire. Cela simplifie la conversion des données en objet java tout en restant facilement lisible par l'humain. 
 
 La sauvegarde est déclenchée par l'usager via la commande '3' dans le menu principal. La classe Sauvegarder valide si un fichier existe et si non elle en crée un. L'ajout s'effectue en mode append pour ne pas écraser les données existantes. En cas d'erreur de sauvegarde un message est envoyé à l'utilisateur.
 
 ## Fonctionnement de la sauvegarde et du rechargement :  
-Le rechargement est effectué au démarrage de l'application. Si le fichier de sauvegarde n'existe pas une nouvelle liste vide est initialisée. Si le fichier existe déjà, l'application lit le contenu et recrée les objets en mémoir en conservant l'information d'origine, les nouvelles tâches recoivent un identifiant distinct des anciennes tâches. Si le fichier est illisible ou corrompu l'exécution est interrompue et un message est envoyé à l'utilisateur. 
+Le rechargement est effectué au démarrage de l'application. Si le fichier de sauvegarde n'existe pas une nouvelle liste vide est initialisée. Si le fichier existe déjà, l'application lit le contenu et recrée les objets en mémoire en conservant l'information d'origine, les nouvelles tâches recoivent un identifiant distinct des anciennes tâches. Si le fichier est illisible ou corrompu l'exécution est interrompue et un message est envoyé à l'utilisateur. 
 
 ## Limites et anomalies connues : 
 Limites ici
