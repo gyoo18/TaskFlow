@@ -34,3 +34,15 @@ Info ici
 
 ## Limites et anomalies connues : 
 Limites ici
+
+## Livrables
+
+### Récits Utilisateurs
+
+- [Ajouter une tâche](https://github.com/gyoo18/TaskFlow/issues/1)
+- [Lister les tâches](https://github.com/gyoo18/TaskFlow/issues/38)
+- [Gérer l'échéance d'une tâche](https://github.com/gyoo18/TaskFlow/issues/5)
+- [Modifier la priorité d'une tâche](https://github.com/gyoo18/TaskFlow/issues/4)
+- [Marquer une tâche comme terminée](https://github.com/gyoo18/TaskFlow/issues/3)
+- [Quitter l'application](https://github.com/gyoo18/TaskFlow/issues/7)
+- [Système de sauvegarde](https://github.com/gyoo18/TaskFlow/issues/6)
