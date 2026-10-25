@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,9 +66,13 @@ public class InterfaceUtilisateur {
 
         System.out.println(BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊 - Gestion des tâches\n");
 
-        //TODO: modifier lorsque les fichiers de sauvegarde existeront
+        File fichierSauvegarde = new File("fichier_sauvegarde.csv");
+        if (fichierSauvegarde.exists()) {
+        System.out.println("Fichier de sauvegarde détecté. Données chargées.\n");
+         } else {
         System.out.println("Aucun fichier de données trouvé."); 
-        System.out.println("L'application démarre avec une liste vide\n");
+        System.out.println("L'application démarre avec une liste vide.\n");
+        }
 
         System.out.println("1. Ajouter une tâche");
         System.out.println("2. Afficher les tâches");
@@ -389,27 +394,10 @@ public class InterfaceUtilisateur {
     }
 
     public static void afficherListeTaches(){
-        //TODO #22 Raccorder Menu Afficher Liste de Tâches à sa fonctionnalité
 
         final int MAX_TACHES_PAR_PAGE=10;
 
-        // Créer des tâches aléatoires
-        Tache[] tacheListe = new Tache[(int)(Math.random()*300)];
-        Tache t;
-        for (int i = 0; i < tacheListe.length; i++) {
-            t = new Tache();
-            t.titre = "Tache "+i;
-            t.priorite = Tache.Priorite.values()[(int)(Math.random()*(Tache.Priorite.values().length-0.01))];
-            t.echeance.add(Calendar.MONTH,(int)(Math.random()));
-            t.echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*t.echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
-            t.echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(t.echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
-            t.echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
-            //t.echeance.add(Calendar.HOUR,(int)((float)i));
-            t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
-            tacheListe[i] = t;
-        }
-        //Tache[] tacheListe = listeTaches.toArray(new Tache[0]);
-        //Tache t;
+        Tache[] tacheListe = Donnees.avoirListeTaches();
         // Trier les tâches selon leur échéance en mettant celles passées à la fin.
         List<Tache> tacheAL = Arrays.asList(tacheListe);
         Collections.sort(tacheAL, new Comparator<Tache>() {
@@ -460,7 +448,7 @@ Liste de tâches
             for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
                 nos[i] = Integer.toString(i+(page*MAX_TACHES_PAR_PAGE)+1);
                 
-                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                Tache t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
                 titres[i] = t.titre;
                 statuts[i] = t.statut.name();
                 priorites[i] = t.priorite.name();
@@ -483,7 +471,7 @@ Liste de tâches
             );
 
             for (int i = 0; i+(page*MAX_TACHES_PAR_PAGE) < Math.min(tacheListe.length, (page+1)*MAX_TACHES_PAR_PAGE); i++) {
-                t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
+                Tache t = tacheListe[i+(page*MAX_TACHES_PAR_PAGE)];
                 System.out.println( CYAN + 
                     nos[i]+(" ".repeat(lNo-nos[i].length()))+"  "+
                     titres[i]+(" ".repeat(lTitre-titres[i].length()))+"  "+(
@@ -501,7 +489,7 @@ Liste de tâches
             System.out.println(
                 "\n"+
                 "w = ligne précédente\n"+
-                "s ou ⮱ = prochaine ligne\n"+
+                "s ou ↵ = prochaine ligne\n"+
                 "a = page précédente\n"+
                 "d = prochaine page\n"+
                 "x = modifier la tâche\n"+
@@ -613,7 +601,7 @@ Modifier une tâche
 """
 
 x = Sélectionner
-s ou ⮱ = Prochain
+s ou ENTREE = Prochain
 w = Précédent
 
 """+GRIS+ITAL+"Version de test, fausse tâche"+NTRE
@@ -798,7 +786,7 @@ Changer le statut d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
+            "s ou ↩ = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
@@ -909,7 +897,7 @@ Changer la Priorité d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
+            "s ou ↩ = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);

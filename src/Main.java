@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main{
@@ -9,6 +10,13 @@ public class Main{
     }
 
     private static void initialisation(){
+        
+        ArrayList<Tache> tachesChargees = Charger.chargerTaches();
+
+        for (Tache t : tachesChargees) {
+            Donnees.ajouterTache(t);
+        }
+
         InterfaceUtilisateur.initier();
     }
 
