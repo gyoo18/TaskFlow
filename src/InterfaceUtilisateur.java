@@ -484,7 +484,7 @@ Liste de tâches
             System.out.println(
                 "\n"+
                 "w = ligne précédente\n"+
-                "s ou ⮱ = prochaine ligne\n"+
+                "s ou ↩ = prochaine ligne\n"+
                 "a = page précédente\n"+
                 "d = prochaine page\n"+
                 "x = modifier la tâche\n"+
@@ -596,7 +596,7 @@ Modifier une tâche
 """
 
 x = Sélectionner
-s ou ⮱ = Prochain
+s ou ↩ = Prochain
 w = Précédent
 
 """+GRIS+ITAL+"Version de test, fausse tâche"+NTRE
@@ -781,7 +781,7 @@ Changer le statut d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
+            "s ou ↩ = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
@@ -892,7 +892,7 @@ Changer la Priorité d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
+            "s ou ↩ = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
