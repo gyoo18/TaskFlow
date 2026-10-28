@@ -52,7 +52,7 @@ public class InterfaceUtilisateur {
             case Menu.STATUT_TACHE:     afficherStatutTache(); break;
             case Menu.PRIORITE_TACHE:   afficherPrioriteTache(); break;
             case Menu.ECHEANCE_TACHE:   afficherEcheanceTache(); break;
-            case Menu.SAUVEGARDER:      MenuSauvegarde menuSauv = new MenuSauvegarde(scanner); menuSauv.afficher(); menu = Menu.PRINCIPAL; break;
+            case Menu.SAUVEGARDER:      afficherMenuSauvegarde(); break;
             case Menu.QUITTER:          afficherMenuQuitter(); break;
         }
     }
@@ -1214,7 +1214,10 @@ Modifier l'échéance d'une Tâche
 
         boolean continuer = true;
 
-        System.out.println("Voulez-vous sauvegarder les changements effectués?\n");
+        System.out.println(BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n");
+        System.out.println("Menu Quitter");
+        System.out.println("============\n");
+        System.out.println(JAUNE+"Voulez-vous sauvegarder les changements effectués?\n"+NTRE);
         System.out.println("1. Oui");
         System.out.println("0. Non, retourner au menu principal");
 
@@ -1225,27 +1228,29 @@ Modifier l'échéance d'une Tâche
             switch(choix){
                 case "1":
                     //le print sera remplacer par une fonction de sauvegarde
-                    System.out.println("Votre sauvegarde a été effectuée");
+                    try{
+                        Sauvegarder.enregistrer(Donnees.avoirListeTaches());
+                        System.out.println(VERT+"Votre sauvegarde a été effectuée"+NTRE);
+                    }catch (IOException e){
+                        System.out.println(ROUGE+e.getMessage()+NTRE);
+                    }
                     InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                     continuer = false;
                     break;
 
                 case "0": 
-                    System.out.println("Retour vers le menu principal");
+                    System.out.println(JAUNE+"Retour vers le menu principal"+NTRE);
                     InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                     continuer = false;
                     break;
 
                 default:
-                    System.out.println("Choix invalide. Veuillez chosir une option entre 0 ou 1.");
+                    System.out.println(ROUGE+"Choix invalide. Veuillez chosir une option entre 0 ou 1."+NTRE);
                     break;
-                }
-                System.out.println();
             }
-
-
-
-
+            System.out.println();
+        }
+        scanner.nextLine();
     }
 
     //Fonction pour quitter le programme

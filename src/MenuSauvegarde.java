@@ -37,7 +37,7 @@ public class MenuSauvegarde{
                         String ligne = t.id + ";" + t.titre + ";" + t.priorite + ";" + dateStr + ";" + t.statut;
                         lignesASauvegarder.add(ligne);
                     }
-                    Sauvegarder.ecrire(lignesASauvegarder);
+                    //Sauvegarder.ecrire(lignesASauvegarder);
                     
                     continuer = false; 
                     break;
