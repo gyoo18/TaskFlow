@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -9,8 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-
-import javax.swing.text.Position;
 
 public class InterfaceUtilisateur {
     
@@ -28,6 +25,8 @@ public class InterfaceUtilisateur {
     }
     private static Menu menu = Menu.PRINCIPAL;
     private static boolean quitter = false;
+
+    private static Tache tacheSelectionnee;
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -523,6 +522,9 @@ Liste de tâches
                         }
                         break;
                     case "x":
+                        int index = page * MAX_TACHES_PAR_PAGE + ligne;
+                        tacheSelectionnee = tacheListe[index];
+
                         InterfaceUtilisateur.menu = Menu.GERER_TACHE;
                         quitter = true;
                         break;
@@ -571,14 +573,7 @@ Liste de tâches
 
     public static void afficherGererTache(){
 
-        Tache t = new Tache();
-        t.titre = "Nouvelle Tâche";
-        t.priorite = Tache.Priorite.values()[(int)(Math.random()*(Tache.Priorite.values().length-0.01))];
-        t.echeance.add(Calendar.MONTH,(int)(Math.random()));
-        t.echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*t.echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
-        t.echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(t.echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
-        t.echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
-        t.statut = Tache.Statut.values()[(int)(Math.random()*(Tache.Statut.values().length-0.01))];
+        Tache t = tacheSelectionnee;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy, kk:mm:ss", Locale.getDefault());
         String echeanceString = dateFormat.format(t.echeance.getTime());
@@ -604,7 +599,7 @@ x = Sélectionner
 s ou ENTREE = Prochain
 w = Précédent
 
-"""+GRIS+ITAL+"Version de test, fausse tâche"+NTRE
+"""
             );
 
         enum Position{
@@ -722,6 +717,8 @@ w = Précédent
     }
 
     public static void afficherTitreTache(){
+        String titre = tacheSelectionnee.titre;
+
         SousRoutine positionnerCurseurSauvegarde = () -> {System.out.print(curPos(23, 7));};
         SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1, 8));};
         SousRoutine effacerErreur = () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
@@ -732,24 +729,24 @@ BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 Renommer une Tâche
 ==================
 
-("""+GRIS+ITAL+"Nouvelle Tâche"+NTRE+") : ["+CURS+GRIS+"_".repeat(30)+NTRE+"]\n"+
+("""+GRIS+ITAL+titre+NTRE+") : ["+CURS+GRIS+"_".repeat(30)+NTRE+"]\n"+
             "\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE+CURA
         );
-        String rep = scanner.nextLine();
-        System.out.print(CURA+EFFACER_LIGNE_RESTE+CYAN+rep+NTRE+"]"+curLigne(1));
+        titre = scanner.nextLine();
+        System.out.print(CURA+EFFACER_LIGNE_RESTE+CYAN+titre+NTRE+"]"+curLigne(1));
         System.out.print(JAUNE+"Sauvegarder ? [O/n] : "+NTRE);
         while(true){
             positionnerCurseurSauvegarde.appeler();
-            rep = scanner.nextLine();
+            String rep = scanner.nextLine();
             effacerErreur.appeler();
             positionnerCurseurSauvegarde.appeler();
             System.out.print(EFFACER_LIGNE_RESTE);
 
             switch(rep.toLowerCase()){
                 case "":
-                case "o": menu = Menu.GERER_TACHE; break;
+                case "o": menu = Menu.GERER_TACHE; tacheSelectionnee.titre = titre; break;
                 case "n": System.out.print(EFFACER_LIGNE+CURA+EFFACER_LIGNE_RESTE+GRIS+"_".repeat(30)+NTRE+"]"+CURA); break;
                 default:
                     positionnerCurseurErreur.appeler();
@@ -761,13 +758,9 @@ Renommer une Tâche
     }
 
     public static void afficherStatutTache(){
-        enum Statut{
-            A_FAIRE,
-            TERMINE
-        }
 
-        String titre = "Nouvelle Tâche";
-        Statut statut = Statut.values()[(int)(Math.random()*Statut.values().length)];
+        String titre = tacheSelectionnee.titre;
+        Tache.Statut statut = tacheSelectionnee.statut;
         System.out.print(
 BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
@@ -778,8 +771,8 @@ Changer le statut d'une Tâche
     "-".repeat(titre.length())+"\n\n");
 
         System.out.println(
-            (statut==Statut.A_FAIRE? "["+JAUNE+"À FAIRE"+NTRE+"]": JAUNE+" À FAIRE "+NTRE) + " : ["+CURS+" ]\n"+
-            (statut==Statut.TERMINE? "["+VERT+"TERMINÉ"+NTRE+"]": VERT+" TERMINÉ "+NTRE) + " : [ ]\n"+
+            (statut==Tache.Statut.A_FAIRE? "["+JAUNE+"À FAIRE"+NTRE+"]": JAUNE+" À FAIRE "+NTRE) + " : ["+CURS+" ]\n"+
+            (statut==Tache.Statut.TERMINE? "["+VERT+"TERMINÉ"+NTRE+"]": VERT+" TERMINÉ "+NTRE) + " : [ ]\n"+
             "\n"+
             "Confirmer : [ ]\n"+
             "Annuler : [ ]\n"+
@@ -828,14 +821,25 @@ Changer le statut d'une Tâche
                     switch (position) {
                         case A_FAIRE: 
                         case TERMINE: 
+                            // Ne pas permettre de sélectionner un statut déjà appliqué
+                            if (position.toString().equals(statut.toString())) {
+                                continue;
+                            }
+
                             positionnerCurseur.appeler(Position.valueOf(statut.toString()));
                             System.out.print(curX(1)+" "+curX(statut.toString().length()+2)+" ");
+
                             positionnerCurseur.appeler(position);
                             System.out.print(curX(1)+"["+curX(position.toString().length()+2)+"]");
+
                             positionnerCurseur.appeler(position);
-                            statut=Statut.valueOf(position.toString()); 
+                            statut = Tache.Statut.valueOf(position.toString());
                             continue;
+
                         case CONFIRMER:
+                            tacheSelectionnee.statut = statut;
+                            menu = Menu.GERER_TACHE;
+                            break;
                         case ANNULER: menu = Menu.GERER_TACHE; break;
                     }
                     break;
@@ -870,14 +874,10 @@ Changer le statut d'une Tâche
     }
 
     public static void afficherPrioriteTache(){
-        enum Priorite{
-            BASSE,
-            NORMALE,
-            ELEVEE
-        }
 
-        String titre = "Nouvelle Tâche";
-        Priorite statut = Priorite.values()[(int)(Math.random()*Priorite.values().length)];
+
+        String titre = tacheSelectionnee.titre;
+        Tache.Priorite priorite = tacheSelectionnee.priorite;
         System.out.print(
 BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n"+"""
 
@@ -888,9 +888,9 @@ Changer la Priorité d'une Tâche
     "-".repeat(titre.length())+"\n\n");
 
         System.out.println(
-            (statut==Priorite.BASSE? "["+GRIS+"BASSE"+NTRE+"]": GRIS+" BASSE "+NTRE) + " : ["+CURS+" ]\n"+
-            (statut==Priorite.NORMALE? "["+BLEU+"NORMALE"+NTRE+"]": BLEU+" NORMALE "+NTRE) + " : [ ]\n"+
-            (statut==Priorite.ELEVEE? "["+ROUGE+"ÉLEVÉE"+NTRE+"]": ROUGE+" ÉLEVÉE "+NTRE) + " : [ ]\n"+
+            (priorite==Tache.Priorite.BASSE? "["+GRIS+"BASSE"+NTRE+"]": GRIS+" BASSE "+NTRE) + " : ["+CURS+" ]\n"+
+            (priorite==Tache.Priorite.NORMALE? "["+BLEU+"NORMALE"+NTRE+"]": BLEU+" NORMALE "+NTRE) + " : [ ]\n"+
+            (priorite==Tache.Priorite.ELEVEE? "["+ROUGE+"ÉLEVÉE"+NTRE+"]": ROUGE+" ÉLEVÉE "+NTRE) + " : [ ]\n"+
             "\n"+
             "Confirmer : [ ]\n"+
             "Annuler : [ ]\n"+
@@ -942,15 +942,23 @@ Changer la Priorité d'une Tâche
                     switch (position) {
                         case BASSE: 
                         case NORMALE:
-                        case ELEVEE:  
-                            positionnerCurseur.appeler(Position.valueOf(statut.toString()));
-                            System.out.print(curX(1)+" "+curX(statut.toString().length()+2)+" ");
+                        case ELEVEE:
+                            // Modifier la priorité temporairement
+                            positionnerCurseur.appeler(Position.valueOf(priorite.toString()));
+                            System.out.print(curX(1)+" "+curX(priorite.toString().length()+2)+" ");
+
                             positionnerCurseur.appeler(position);
                             System.out.print(curX(1)+"["+curX(position.toString().length()+2)+"]");
+
                             positionnerCurseur.appeler(position);
-                            statut=Priorite.valueOf(position.toString()); 
+                            priorite = Tache.Priorite.valueOf(position.toString());
                             continue;
+
                         case CONFIRMER:
+                            // Appliquer la nouvelle priorité à la tâche
+                            tacheSelectionnee.priorite = priorite;
+                            menu = Menu.GERER_TACHE;
+                            break;
                         case ANNULER: menu = Menu.GERER_TACHE; break;
                     }
                     break;
@@ -1005,12 +1013,8 @@ Changer la Priorité d'une Tâche
         SousRoutine positionnerCurseurErreur = () -> {System.out.print(curPos(1,10));};
         SousRoutine effacerErreur =            () -> {positionnerCurseurErreur.appeler(); System.out.print(EFFACER_LIGNE);};
 
-        String titre = "Nouvelle Tâche";
-        Calendar echeance = Calendar.getInstance();
-        echeance.add(Calendar.MONTH,(int)(Math.random()));
-        echeance.set(Calendar.DAY_OF_MONTH, (int)(Math.random()*echeance.getActualMaximum(Calendar.DAY_OF_MONTH)));
-        echeance.set(Calendar.HOUR_OF_DAY,(int)(Math.random()*(echeance.getActualMaximum(Calendar.HOUR_OF_DAY)+0.99)));
-        echeance.set(Calendar.MINUTE,(int)(Math.random()*59.99));
+        String titre = tacheSelectionnee.titre;
+        Calendar echeance = (Calendar) tacheSelectionnee.echeance.clone();
 
         int annee = echeance.get(Calendar.YEAR);
         String mois = echeance.getDisplayName(Calendar.MONTH, Calendar.SHORT_FORMAT, Locale.getDefault());
@@ -1197,6 +1201,7 @@ Modifier l'échéance d'une Tâche
 
                 if (confirmation.equals("o") || confirmation.length() == 0){
                     InterfaceUtilisateur.menu = Menu.GERER_TACHE;
+                    tacheSelectionnee.echeance = echeance;
                     break;
                 }
 
@@ -1260,8 +1265,7 @@ Modifier l'échéance d'une Tâche
 
         if (choixQuitter.equals("o")) {
             System.out.println("Au revoir !");
-            System.exit(0);
-            scanner.close();
+            InterfaceUtilisateur.quitter = true;
         } else if (choixQuitter.equals("n")) {
             System.out.println("Retour au menu principal.");
             InterfaceUtilisateur.menu = Menu.PRINCIPAL;
