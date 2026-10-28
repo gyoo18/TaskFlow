@@ -1,7 +1,19 @@
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import java.util.ArrayList; // Import the ArrayList class
 
 
+    private static void initialisation(){
+        
+        ArrayList<Tache> tachesChargees = Charger.chargerTaches();
+
+        for (Tache t : tachesChargees) {
+            Donnees.ajouterTache(t);
+        }
+
+        InterfaceUtilisateur.initier();
+    }
 
 public class Main{
 
