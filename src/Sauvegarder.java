@@ -31,7 +31,7 @@ public class Sauvegarder {
 
         
         // ajouter les listes dans le fichier de sauvegarde
-       try (FileWriter myWriter = new FileWriter(ficherSauvegarde, true)) {
+       try (FileWriter myWriter = new FileWriter(ficherSauvegarde, false)) {
             for (String ajout : liste_ajout) {
                 // On écrit l'élément suivi d'un retour à la ligne
                 myWriter.write(ajout + System.lineSeparator());
