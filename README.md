@@ -130,6 +130,12 @@ Le rechargement est effectué au démarrage de l'application. Si le fichier de s
 ## Limites et anomalies connues : 
 Limites ici
 
+### Anomalie - Tâche sans titre ou avec un titre composé d'espace
+
+Dans le cas d'une tâche ayant un titre vide ou composé uniquement d'espaces, la tâche n'est pas refusée lors de la création et est créée comme telle.
+
+Pour réparer: il faudrait empêcher la création de tâche sans titre, donc retirer le remplissage automatique du titre de tâche par "Nouvelle Tâche" et bloquer la création d'une tâche dont le titre est composé uniquement d'espaces.
+
 ## Livrables
 
 ### Récits Utilisateurs
