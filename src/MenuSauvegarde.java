@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuSauvegarde{
@@ -24,10 +26,20 @@ public class MenuSauvegarde{
             String choix = scanner.nextLine().trim();
             System.out.println();
 
-            // TODO: ajouter la fonction effectuer une sauvegarde
+  
             switch (choix) {
                 case "1":
-                    afficherFonctionnalite("Effectuer la sauvegarde");
+                    ArrayList<String> lignesASauvegarder = new ArrayList<>();
+                    Tache[] toutesLesTaches = Donnees.avoirListeTaches();
+                    
+                    for (Tache t : toutesLesTaches) {
+                        String dateStr = (t.echeance != null) ? new SimpleDateFormat("yyyy-MM-dd").format(t.echeance.getTime()) : "";
+                        String ligne = t.id + ";" + t.titre + ";" + t.priorite + ";" + dateStr + ";" + t.statut;
+                        lignesASauvegarder.add(ligne);
+                    }
+                    Sauvegarder.ecrire(lignesASauvegarder);
+                    
+                    continuer = false; 
                     break;
 
 
@@ -54,8 +66,4 @@ public class MenuSauvegarde{
         System.out.println("0. Non, retourner au menu principal");
     }
 
-    //TODO: Pour tests. Enlever lorsque toutes les fonctionnalités seront disponibles. 
-    private void afficherFonctionnalite(String nom){
-        System.out.println("La fonctionnalité \"" + nom + "\" n'est pas encore disponible.");
-    }
 }
