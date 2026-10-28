@@ -52,7 +52,7 @@ public class InterfaceUtilisateur {
             case Menu.STATUT_TACHE:     afficherStatutTache(); break;
             case Menu.PRIORITE_TACHE:   afficherPrioriteTache(); break;
             case Menu.ECHEANCE_TACHE:   afficherEcheanceTache(); break;
-            case Menu.SAUVEGARDER:      erreurNonImplemente("Sauvegarder"); break;
+            case Menu.SAUVEGARDER:      MenuSauvegarde menuSauv = new MenuSauvegarde(scanner); menuSauv.afficher(); menu = Menu.PRINCIPAL; break;
             case Menu.QUITTER:          afficherMenuQuitter(); break;
         }
     }
@@ -489,7 +489,7 @@ Liste de tâches
             System.out.println(
                 "\n"+
                 "w = ligne précédente\n"+
-                "s ou ↵ = prochaine ligne\n"+
+                "s ou ENTREE = prochaine ligne\n"+
                 "a = page précédente\n"+
                 "d = prochaine page\n"+
                 "x = modifier la tâche\n"+
@@ -786,7 +786,7 @@ Changer le statut d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ↩ = Prochain\n"+
+            "s ou ENTREE = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
@@ -897,7 +897,7 @@ Changer la Priorité d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ↩ = Prochain\n"+
+            "s ou ENTREE = Prochain\n"+
             "\n"+
             GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
