@@ -1,0 +1,16 @@
+# Fichier Java compilés
+*.class
+
+# Dossier de compilation
+out/
+bin/
+
+# Fichiers de configuration locaux de VS Code
+.vscode/
+
+# Fichiers temporaires du système
+.DS_Store
+Thumbs.db
+
+# fichier de sauvegarde
+fichier_sauvegarde.csv
