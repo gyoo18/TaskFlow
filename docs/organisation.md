@@ -23,8 +23,37 @@ Pour organiser le travail d'équipe, nous avons commencé par créer des issues 
 ### La définition de terminé
 
 ### Les objectifs et les résultats de chaque itération
+Nous avons décidé de séparer le travail en 2 itérations : 
+
+#### Itération 1 | Un premier prototype fonctionnel : 
+Le but de la première itération était de produire un premier prototype fonctionnel. Nous voulions avoir une interface utilisateur complète ainsi que la fonctionnalité de base d'ajouter une tâche. 
+
+Le résultat : Une première itération qui est exécutable et qui permet de naviguer entre les différents menus (ajouter, modifier, quitter). On peut aussi quitter le programme et ajouter une tâche. Ce qui n'est pas inclu dans cette version : Sauvegarder les données, modifier une tâche et charger les données au lancement.
+
+
+#### Itération 2 | Version finale et pleinement fonctionnelle :
+Le but de la deuxième itération était d'arriver à une version finale et complète de l'application. Nous voulions intégrer la persistance des données (chargement et sauvegarde automatiques) et finaliser la logique de modification des tâches.
+
+Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modifier des tâches, de charger automatiquement les données au lancement et d'assurer une sauvegarde fiable à la requête de l'utilisateur. L'intégrité des identifiants des tâches sont garanties et l'application gère proprement les erreurs de fichiers (fichiers manquants ou corrompus).
 
 ### Les ajustements apportés à notre démarche
 
 ### La contribution de chaque membre
 
+#### Francis Lapointe : 
+
+#### Sébastien Roussel :
+
+#### Félix Ladouceur :
+
+#### Vincent Godbout : 
+
+#### Hugo Thivierge :
+- Documentation (readme.md & organisation.md)
+- Classe charger-donnees et son implémentation (fonctionnalité du chargement automatique des données)
+- Merge des fonctionalités de sauvegarde et du chargement de données
+
+Liens :
+- [Issues](https://github.com/gyoo18/TaskFlow/issues?q=is%3Aissue+state%3Aclosed+assignee%3AHugus12)
+- [Pull request](https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+author%3AHugus12)
+- [Reviews de code (approbation des pull requests de collègues)](https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+reviewed-by%3A%40me)
