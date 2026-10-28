@@ -45,6 +45,13 @@ Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modi
 #### Sébastien Roussel :
 
 #### Félix Ladouceur :
+-Implémentation de la fonctionnalité d'enregistrer une tâche localement
+-Implémentation de l'option de Quitter l'application
+-Acceptation de pull requests des autres membres
+
+Liens:
+-Évaluation de pull requests d'autres membres: https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+reviewed-by%3A%40me
+-Complétion d'Issues: https://github.com/gyoo18/TaskFlow/issues?q=is%3Aissue+assignee%3AMrCarnaval
 
 #### Vincent Godbout : 
 
