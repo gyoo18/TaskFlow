@@ -59,6 +59,16 @@ Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modi
 #### Francis Lapointe : 
 
 #### Sébastien Roussel :
+- Implémentation du menu principal
+- Implémentation de la fonctionnalité de modification de priorité d'une tâche
+- Implémentation de la fonctionnalité de marquer une tâche comme terminée
+- Contribution à la documentation (README.md, verification.md)
+
+
+Liens:
+- [Issues](https://github.com/gyoo18/TaskFlow/issues?q=is%3Aissue++assignee%3A%40SebS1k)
+- [Pull requests](https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+author%3ASebS1K)
+- [Reviews de code (approbation des pull requests de collègues)](https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+reviewed-by%3ASebS1K)
 
 #### Félix Ladouceur :
 -Implémentation de la fonctionnalité d'enregistrer une tâche localement
