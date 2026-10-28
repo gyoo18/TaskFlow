@@ -11,7 +11,7 @@
 L'application est un gestionnaire de tâches en ligne de commande qui propose les fonctionnalités suivantes :
 1. **Ajout d'une tâche** : Créer une nouvelle tâche avec un titre obligatoire, priorité par défaut (Normale), échéance optionnelle, identifiant auto-généré et statut À faire.
 2. **Affichage des tâches** : Lister toutes les tâches enregistrées (pour chacune, son identifiant, son titre, sa priorité, son échéance ou l'absence d'échéance, et son statut).
-3. **Marquage comme terminée** : Changer l'état d'une tâche de "en cours" à "terminée".
+3. **Marquage comme terminée** : Changer l'état d'une tâche de "à faire" à "terminée".
 4. **Modification de la priorité** : Ajuster le niveau de priorité d'une tâche existante (ex: Basse, Normale, Élevée).
 5. **Gestion de l'échéance** : Ajout, modification ou suppression d'échéance. Rejet automatique des dates invalides.
 6. **Sauvegarde et rechargement** : Sauvegarde manuelle et rechargement automatique au lancement. Gestion des fichiers corrompues et des erreurs de sauvegarde.
@@ -38,7 +38,86 @@ L'application est un gestionnaire de tâches en ligne de commande qui propose le
 - contenu à valider avec la navigation
 
 ## Exemple d'utilisation :  
-Exemple ici  
+
+Taskflow permet de gérer une liste de tâche à partir d'une interface en ligne de commande. Voici un exemple illustrant les principales fonctionnalités de l'application.
+
+### 1. Démarrer l'application
+
+Au démarrage, Taskflow charge automatiquement les tâches précédemment sauvegardées, lorsqu'un fichier de sauvegarde est disponible. L'utilisateur accès ensuite au menu principal pour naviguer entre les différentes fonctionnalités. 
+
+### 2. Ajouter des tâches
+
+L'utilisateur peut ajouter des tâches en fournissant les informations demandées.
+
+Par exemple:
+
+- **Tâche 1:** Vérifier la sauvegarde du serveur
+    - Identifiant: Généré automatiquement
+    - Priorité: Normale (par défaut)
+    - Échéance: 15/11/2026 à 11h25
+    - Statut: À faire
+- **Tâche 2:** Mettre à jour le guide utilisateur
+    - Identifiant: Généré automatiquement
+    - Priorité: Basse
+    - Échéance: 28/11/2026 à 16h00
+    - Statut: À faire
+
+Chaque tâche reçoit automatiquement un identifiant unique et un statut initial "À faire". 
+
+### 3. Consulter les tâches
+
+Après leur création, les tâches sont accessibles à partir de l'option permettant d'afficher la liste.
+
+L'application présente les informations suivantes pour chaque tâche:
+
+- Son identifiant;
+- Son titre;
+- Sa priorité;
+- Son échéance;
+- Son statut.
+
+L'utilisateur peut sélectionner une tâche dans la liste afin d'accéder à son interface de gestion.
+
+### 4. Modifier une tâche
+
+En sélectionnant une tâche, l'utilisateur accède à son interface de gestion. Il peut notamment modifier sa priorité en choisissant parmi les niveaux suivants:
+
+- Basse;
+- Normale;
+- Élevée;
+
+Par exemple, la priorité de "Vérifier la sauvegarde du serveur" peut être chagée de **Normale** à **Élevée**. La modification est appliquée après confirmation.
+
+### 5. Gérer les échéances
+
+L'utilisateur peut modifier l'échéance d'une tâche existante.
+
+Par exemple, il peut modifier l'échéance à la tache *Mettre à jour le guide utilisateur*. L'application vérifie la validité des dates saisies et rejette automatiquement les dates invalides afin de préserver la cohérence des données.
+
+### 6. Marquer une tâche comme terminée
+
+Lorsqu'une tâche est accomplie, l'utilisateur peut modifier son statut à partir de son interface de gestion.
+
+Par exemple, le statut de "Vérifier la sauvegarde du serveur" passe de **À faire** à **Terminée**. Le changement est ensuite visible dans la liste des tâches.
+
+### 7. Sauvegarder les données
+
+L'utilisateur peut sauvegarder manuellement les tâches enregistrées. Cette opération permet de conserver les modifications effectuées.
+
+Au prochain lancement de l'application, les données sont automatiquement rechargées à partir du fichier de sauvegarde.
+
+TaskFlow prend également en charge la gestion des erreurs liées à la sauvegarde, notamment les fichiers corrompus et les problèmes d'écriture.
+
+### 8. Résultat
+
+À la suite de ces opérations, la liste reflète les modifications effectuées
+
+|Tâche|Priorité|Échéance|Statut|
+|:----|:-------|:-------|:-----|
+|Vérifier la sauvegarde du serveur|Élevée|15/11/2026|Terminée|
+|Mettre à jour le guide utilisateur|Basse|28/11/2026|À faire|
+
+Les modifications peuvent ensuite être sauvegardées et retrouvées automatiquement lors d'une prochaine exécution de TaskFlow. 
 
 ## Format et emplacement du fichier de données :  
 Le fichier de données est stocké à la racine du projet sous le nom de *fichier_sauvegarde.csv*. Nous avons décidé d'utiliser le format csv pour sa simplicité et sa structure tabulaire. Cela simplifie la conversion des données en objet java tout en restant facilement lisible par l'humain. 
