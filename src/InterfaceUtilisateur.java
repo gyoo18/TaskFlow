@@ -1249,8 +1249,7 @@ Modifier l'échéance d'une Tâche
 
         if (choixQuitter.equals("o")) {
             System.out.println("Au revoir !");
-            System.exit(0);
-            scanner.close();
+            InterfaceUtilisateur.quitter = true;
         } else if (choixQuitter.equals("n")) {
             System.out.println("Retour au menu principal.");
             InterfaceUtilisateur.menu = Menu.PRINCIPAL;
