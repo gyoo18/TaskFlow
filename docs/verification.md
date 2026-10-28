@@ -78,7 +78,7 @@
 
 |Données utilisées|Résultat attendu|Résultat observé|Conclusion|
 |:----------------|:---------------|:--------------|:----------|
-|Inscrire réponse ici|Réponse|Réponse|Réponse|
+|Les données enregistrée ont été prises en note. L'application a été fermée et réouverte|Les données demeurent inchangées|Les données n'ont pas changées|Toutes les informations sont conservées dans le fichier de sauvegarde entre les utilisations|
 
 
 ### 10. Ajout après rechargement
@@ -87,7 +87,7 @@
 
 |Données utilisées|Résultat attendu|Résultat observé|Conclusion|
 |:----------------|:---------------|:--------------|:----------|
-|Inscrire réponse ici|Réponse|Réponse|Réponse|
+|Le fichier de Sauvegarde contient déjà des données avant l'ouverture d'une nouvelle session. Des nouvelles données ont été ajoutées.|L'identifiant de la nouvelle tâche doit être différentes des autres tâches déjà présentes.|Les Tâches ajoutées ont effectivement un identifiant distinct.|La génération d'identifiant n'est pas affecté par une nouvelle session.|
 
 
 ### 11. Fichier absent ou mal formé
