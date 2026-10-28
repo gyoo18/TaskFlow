@@ -11,3 +11,6 @@ bin/
 # Fichiers temporaires du système
 .DS_Store
 Thumbs.db
+
+# fichier de sauvegarde
+fichier_sauvegarde.csv
