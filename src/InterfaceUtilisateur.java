@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -50,7 +51,7 @@ public class InterfaceUtilisateur {
             case Menu.STATUT_TACHE:     afficherStatutTache(); break;
             case Menu.PRIORITE_TACHE:   afficherPrioriteTache(); break;
             case Menu.ECHEANCE_TACHE:   afficherEcheanceTache(); break;
-            case Menu.SAUVEGARDER:      erreurNonImplemente("Sauvegarder"); break;
+            case Menu.SAUVEGARDER:      afficherMenuSauvegarde(); break;
             case Menu.QUITTER:          afficherMenuQuitter(); break;
         }
     }
@@ -64,9 +65,13 @@ public class InterfaceUtilisateur {
 
         System.out.println(BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊 - Gestion des tâches\n");
 
-        //TODO: modifier lorsque les fichiers de sauvegarde existeront
+        File fichierSauvegarde = new File("fichier_sauvegarde.csv");
+        if (fichierSauvegarde.exists()) {
+        System.out.println("Fichier de sauvegarde détecté. Données chargées.\n");
+         } else {
         System.out.println("Aucun fichier de données trouvé."); 
-        System.out.println("L'application démarre avec une liste vide\n");
+        System.out.println("L'application démarre avec une liste vide.\n");
+        }
 
         System.out.println("1. Ajouter une tâche");
         System.out.println("2. Afficher les tâches");
@@ -483,7 +488,7 @@ Liste de tâches
             System.out.println(
                 "\n"+
                 "w = ligne précédente\n"+
-                "s ou ⮱ = prochaine ligne\n"+
+                "s ou ENTREE = prochaine ligne\n"+
                 "a = page précédente\n"+
                 "d = prochaine page\n"+
                 "x = modifier la tâche\n"+
@@ -591,7 +596,7 @@ Modifier une tâche
 """
 
 x = Sélectionner
-s ou ⮱ = Prochain
+s ou ENTREE = Prochain
 w = Précédent
 
 """
@@ -774,8 +779,9 @@ Changer le statut d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
-            "\n");
+            "s ou ENTREE = Prochain\n"+
+            "\n"+
+            GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
 
         enum Position{
@@ -891,8 +897,9 @@ Changer la Priorité d'une Tâche
             "\n"+
             "x = Sélectionner\n"+
             "w = Précédant\n"+
-            "s ou ⮱ = Prochain\n"+
-            "\n");
+            "s ou ENTREE = Prochain\n"+
+            "\n"+
+            GRIS+ITAL+"Version de test, n'est pas une vrai tâche"+NTRE);
         System.out.print(CURA);
 
         enum Position{
@@ -1212,7 +1219,10 @@ Modifier l'échéance d'une Tâche
 
         boolean continuer = true;
 
-        System.out.println("Voulez-vous sauvegarder les changements effectués?\n");
+        System.out.println(BLEU+GRAS+SOUL+"TASKFLOW"+NTRE+" 🌊\n");
+        System.out.println("Menu Quitter");
+        System.out.println("============\n");
+        System.out.println(JAUNE+"Voulez-vous sauvegarder les changements effectués?\n"+NTRE);
         System.out.println("1. Oui");
         System.out.println("0. Non, retourner au menu principal");
 
@@ -1223,23 +1233,29 @@ Modifier l'échéance d'une Tâche
             switch(choix){
                 case "1":
                     //le print sera remplacer par une fonction de sauvegarde
-                    System.out.println("Votre sauvegarde a été effectuée");
+                    try{
+                        Sauvegarder.enregistrer(Donnees.avoirListeTaches());
+                        System.out.println(VERT+"Votre sauvegarde a été effectuée"+NTRE);
+                    }catch (IOException e){
+                        System.out.println(ROUGE+e.getMessage()+NTRE);
+                    }
                     InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                     continuer = false;
                     break;
 
                 case "0": 
-                    System.out.println("Retour vers le menu principal");
+                    System.out.println(JAUNE+"Retour vers le menu principal"+NTRE);
                     InterfaceUtilisateur.menu = Menu.PRINCIPAL;
                     continuer = false;
                     break;
 
                 default:
-                    System.out.println("Choix invalide. Veuillez chosir une option entre 0 ou 1.");
+                    System.out.println(ROUGE+"Choix invalide. Veuillez chosir une option entre 0 ou 1."+NTRE);
                     break;
-                }
-                System.out.println();
             }
+            System.out.println();
+        }
+        scanner.nextLine();
     }
 
     //Fonction pour quitter le programme
