@@ -62,3 +62,4 @@ Limites ici
 - [Marquer une tâche comme terminée](https://github.com/gyoo18/TaskFlow/issues/3)
 - [Quitter l'application](https://github.com/gyoo18/TaskFlow/issues/7)
 - [Système de sauvegarde](https://github.com/gyoo18/TaskFlow/issues/6)
+- [Système de chargement des données](https://github.com/gyoo18/TaskFlow/issues/12)
