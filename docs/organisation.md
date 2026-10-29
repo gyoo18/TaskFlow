@@ -19,6 +19,8 @@ Pour organiser le travail d'équipe, nous avons commencé par créer des issues 
 [Lien vers les issues](https://github.com/gyoo18/TaskFlow/issues)
 
 ### Les choix de priorité et les estimations
+Pour les choix de priorité ous avons accordé une priorité élevée aux fonctionnalités principales du système : l'accès au menu, la création et l'affichage des tâches, ainsi que la sauvegarde et le rechargement des données. Les fonctionnalités secondaires comme le suivi de l'état, la modification de la priorité et la gestion des échéances ont été classées en priorité moyenne/normale étant donné qu'elles ne sont pas essentielles au fonctionnement du système. Les estimations en points (de 1 à 3) sont proportionnels face à l'effort et les risques associés : d'un effort minimal (1 point) pour les actions simples sur les attributs ou la structure de menus, jusqu'à un effort supérieur (3 points) pour les modules nécessitant une validation stricte des saisies ou une gestion des erreurs de fichiers. Chaque issue principale mentionne la priorité de la tâche, sont estimation, notre hypothèse et son état d'avancement (si l'issue est complétée ou non).
+
 
 ### La définition de terminé
 
