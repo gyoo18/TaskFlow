@@ -57,6 +57,15 @@ Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modi
 ### La contribution de chaque membre
 
 #### Francis Lapointe : 
+- Implémentation du menu de sauvegarde
+- Sauvegarde automatique
+- Écrire les données dans un fichier de sauvegarde
+
+[Issues](https://github.com/gyoo18/TaskFlow/issues?q=is%3Aissue+state%3Aclosed+assignee%3AFrankydud3)
+
+[Merge] (https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+author%3AFrankydud3)
+
+[Reviews de code (approbation des pull requests de collègues)](https://github.com/gyoo18/TaskFlow/pull/47/changes/BASE..32ab8f49a05f6cb86e6f2f9cf48b6a990d13b4f6)
 
 #### Sébastien Roussel :
 - Implémentation du menu principal
