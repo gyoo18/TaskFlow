@@ -19,7 +19,7 @@ Pour organiser le travail d'équipe, nous avons commencé par créer des issues 
 [Lien vers les issues](https://github.com/gyoo18/TaskFlow/issues)
 
 ### Les choix de priorité et les estimations
-Pour les choix de priorité ous avons accordé une priorité élevée aux fonctionnalités principales du système : l'accès au menu, la création et l'affichage des tâches, ainsi que la sauvegarde et le rechargement des données. Les fonctionnalités secondaires comme le suivi de l'état, la modification de la priorité et la gestion des échéances ont été classées en priorité moyenne/normale étant donné qu'elles ne sont pas essentielles au fonctionnement du système. Les estimations en points (de 1 à 3) sont proportionnels face à l'effort et les risques associés : d'un effort minimal (1 point) pour les actions simples sur les attributs ou la structure de menus, jusqu'à un effort supérieur (3 points) pour les modules nécessitant une validation stricte des saisies ou une gestion des erreurs de fichiers. Chaque issue principale mentionne la priorité de la tâche, sont estimation, notre hypothèse et son état d'avancement (si l'issue est complétée ou non).
+Pour les choix de priorité ous avons accordé une priorité élevée aux fonctionnalités principales du système : l'accès au menu, la création et l'affichage des tâches, ainsi que la sauvegarde et le rechargement des données. Les fonctionnalités secondaires comme le suivi de l'état, la modification de la priorité et la gestion des échéances ont été classées en priorité moyenne/normale étant donné qu'elles ne sont pas essentielles au fonctionnement du système. Les estimations en points (de 1 à 3) sont proportionnels face à l'effort et les risques associés : d'un effort minimal (1 point) pour les actions simples sur les attributs ou la structure de menus, jusqu'à un effort supérieur (3 points) pour les modules nécessitant une validation stricte des saisies ou une gestion des erreurs de fichiers. Chaque issue principale mentionne la priorité de la tâche, son estimation, notre hypothèse et son état d'avancement (si l'issue est complétée ou non).
 
 
 ### La définition de terminé
@@ -56,6 +56,8 @@ Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modi
 
 ### Les ajustements apportés à notre démarche
 
+Nous n'avons pas fait beaucoup de modifications à notre démarche au cours du projet. Par contre, en début de projet nous avions une approche plus individuelle où nous essayions de déléguer chaque tâche et de diviser le projet en blocs. Cette approche entraînait des écarts de synchronisation et des confusions techniques. Pour corriger le tout, nous avons changé notre méthode de travail vers une démarche un peu plus collaborative : nous avons fait plus de réunions d'équipe et nous avons pris l'initiative de partager les informations importantes sur notre serveur Discord. Ce changement nous a permis d'aligner notre vision et de résoudre les blocages plus rapidement.
+
 ### La contribution de chaque membre
 
 #### Francis Lapointe : 
@@ -65,7 +67,7 @@ Le résultat : Une version complète de TaskFlow qui permet d'ajouter et de modi
 
 [Issues](https://github.com/gyoo18/TaskFlow/issues?q=is%3Aissue+state%3Aclosed+assignee%3AFrankydud3)
 
-[Merge] (https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+author%3AFrankydud3)
+[Merge](https://github.com/gyoo18/TaskFlow/pulls?q=is%3Apr+state%3Aclosed+author%3AFrankydud3)
 
 [Reviews de code (approbation des pull requests de collègues)](https://github.com/gyoo18/TaskFlow/pull/47/changes/BASE..32ab8f49a05f6cb86e6f2f9cf48b6a990d13b4f6)
 
