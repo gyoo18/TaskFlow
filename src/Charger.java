@@ -11,33 +11,38 @@ public class Charger {
     private static final String NOM_FICHIER = "fichier_sauvegarde.csv";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static ArrayList<Tache> chargerTaches() {
+    // On ajoute "throws Exception" pour propager l'erreur vers le Main
+    public static ArrayList<Tache> chargerTaches() throws Exception {
         ArrayList<Tache> taches = new ArrayList<>();
         File fichierSauvegarde = new File(NOM_FICHIER);
 
-        // Vérifie si le fichier de sauvegarde existe
         if (!fichierSauvegarde.exists()) {
-            return taches; // Return liste vide
+            return taches; 
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(fichierSauvegarde))) {
             String ligne;
+            int numeroLigne = 0;
 
             while ((ligne = br.readLine()) != null) {
+                numeroLigne++;
                 ligne = ligne.trim();
                 if (ligne.isEmpty()) continue;
 
                 String[] elements = ligne.split(";", -1);
 
-                if (elements.length >= 5) {
+                // Si le nombre de colonnes est incorrect, on lève une exception directement
+                if (elements.length != 5) {
+                    throw new IllegalArgumentException("Ligne " + numeroLigne + " : Nombre de colonnes incorrect (attendu 5, trouvé " + elements.length + ").");
+                }
+
+                try {
                     Tache tache = new Tache();
 
-                    // Remplissage des attributs de classe Tache
                     tache.id = Long.parseLong(elements[0].trim());
                     tache.titre = elements[1].trim();
                     tache.priorite = Tache.Priorite.valueOf(elements[2].trim());
 
-                    // Conversion de la date String vers Calendar
                     String dateStr = elements[3].trim();
                     if (!dateStr.isEmpty()) {
                         Date date = DATE_FORMAT.parse(dateStr);
@@ -50,11 +55,11 @@ public class Charger {
                     tache.statut = Tache.Statut.valueOf(elements[4].trim());
 
                     taches.add(tache);
+                } catch (Exception e) {
+                    // On relève l'exception pour stopper l'initialisation et indiquer la ligne
+                    throw new RuntimeException("Ligne " + numeroLigne + " : Format de données invalide (" + e.getMessage() + ").");
                 }
             }
-        } catch (Exception e) {
-            System.out.println("Une erreur est survenue lors du chargement des tâches.");
-            e.printStackTrace();
         }
 
         return taches;
