@@ -147,6 +147,7 @@ Pour réparer: il faudrait empêcher la création de tâche sans titre, donc ret
 
 ### Limite - Fichier mal formatté : 
 Lorsque le ficheir de sauvegarde est mal formaté (ex une ligne est trop courte ou trop longue) le programme ignore la ligne au lieu de lacer une exception. Il faudrait ajouter une validation pour le nombre d'éléments dans une ligne.
+Prévu d'être réglé avant la remise du devoir dans la version 1.0.
 
 ## Livrables
 
