@@ -32,10 +32,19 @@ L'application est un gestionnaire de tâches en ligne de commande qui propose le
 - Appuyer sur la touche "3" et lancer la commande sauvegarder;
 - Appuyer sur la touche "4" et lancer la commande quitter l'application;
 
-2. Après avoir séléctionné "ajouter une tâche, l'utilisateur sera dirigé vers le menu ajouter tâche et devra saisir un titre et peut préciser une priorité et une échéance pour la nouvelle tâche. 
+2. Après avoir séléctionné "ajouter une tâche", l'utilisateur sera dirigé vers le menu ajouter tâche et devra saisir un titre et peut préciser une priorité et une échéance pour la nouvelle tâche. 
 
-3. Après avoir slectionné "afficher les tâches" l'utilisateur peut ; 
-- contenu à valider avec la navigation
+3. Après avoir slectionné "afficher les tâches" l'utilisateur peut :
+- Utiliser w, a, s, d, ENTREE pour naviguer entre les tâches et les pages;
+- x pour modifier la tâche, ensuite avec la même navigation il peut choisir quel attribut modifier;
+- q pour quitter vers le menu principal;
+
+4. Après avoir sélectionné "savegarder" :
+- L'utilisateur doit confirmer 1 = oui et 0 = non;
+
+5. Après avoir sélectionné "quitter" :
+- L'utilisateur doit confirmer O = oui et N = non;
+
 
 ## Exemple d'utilisation :  
 
@@ -135,6 +144,9 @@ Limites ici
 Dans le cas d'une tâche ayant un titre vide ou composé uniquement d'espaces, la tâche n'est pas refusée lors de la création et est créée comme telle.
 
 Pour réparer: il faudrait empêcher la création de tâche sans titre, donc retirer le remplissage automatique du titre de tâche par "Nouvelle Tâche" et bloquer la création d'une tâche dont le titre est composé uniquement d'espaces.
+
+### Limite - Fichier mal formatté : 
+Lorsque le ficheir de sauvegarde est mal formaté (ex une ligne est trop courte ou trop longue) le programme ignore la ligne au lieu de lacer une exception. Il faudrait ajouter une validation pour le nombre d'éléments dans une ligne.
 
 ## Livrables
 
