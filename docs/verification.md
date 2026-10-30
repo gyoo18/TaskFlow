@@ -6,7 +6,7 @@
 
 |Données utilisées|Résultat attendu|Résultat observé|Conclusion|
 |:----------------|:---------------|:--------------|:----------|
-|Inscrire réponse ici|Réponse|Réponse|Réponse|
+|Lancement du programme sans fichier de sauvegarde.| Initialisation avec une liste vide et message explicite à l'utilisateur.|Aucun fichier de données trouvé. L'application démarre avec une liste vide.| Le système commence avec une liste vide et averti l'usager.|
 
 
 ### 2. Ajout valide
@@ -15,7 +15,7 @@
 
 |Données utilisées|Résultat attendu|Résultat observé|Conclusion|
 |:----------------|:---------------|:--------------|:----------|
-|Inscrire réponse ici|Réponse|Réponse|Réponse|
+|Le test est effectué en laissant toutes les valeurs par défaut. |On s'attend à ce tous les champs soient remplis lorsque la tâche est ajoutée même si l'utilisateur ne change pas la valeur. |1   Nouvelle Tâche  A_FAIRE  NORMALE   30 Oct 2026, 10:21:21 |La tâche est ajoutée correctement même si l'utilisateur ne personnalise pas les champs. |
 
 
 ### 3. Titre invalide
@@ -96,7 +96,7 @@
 
 |Données utilisées|Résultat attendu|Résultat observé|Conclusion|
 |:----------------|:---------------|:--------------|:----------|
-|Inscrire réponse ici|Réponse|Réponse|Réponse|
+|Un fichier csv dont les lignes étaient à moitié effacées a été utilisé pour ce test. |On voudrait que le programme mentionne l'erreur ou lance une exception. |Le programme ignore les lignes mal formées et charge le fichier sans lancer un exception. |Il faudrait arrêter l'initialisation du programme et lancer une exception. |
 
 
 ### 12. Échec d'écriture
